@@ -68,11 +68,11 @@ h1, h2, h3, h4, h5, p { margin: 0; }
 .dot--pulse { box-shadow: 0 0 0 0 rgba(31, 255, 194, 0.6); animation: pulse 2s infinite; }
 @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(31, 255, 194, 0); } 100% { box-shadow: 0 0 0 0 rgba(31, 255, 194, 0); } }
 
-.chip { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px 8px 12px; border: 1px solid var(--line-d); border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: clamp(18px, 2.4vw, 32px); }
-.chip .dot { background: var(--mint-d); }
-.chip--dark { border-color: var(--line); color: var(--txt); }
+.chip { display: inline-flex; align-items: center; gap: 12px; width: fit-content; max-width: 100%; align-self: flex-start; padding: 0; border: 0; border-radius: 0; background: none; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: clamp(18px, 2.4vw, 30px); }
+.chip .dot { flex: none; width: 28px; height: 2px; border-radius: 2px; background: var(--mint-d); box-shadow: none; animation: none; }
+.chip--dark { color: var(--txt); }
 .chip--dark .dot { background: var(--mint); }
-.chip--ink { border-color: rgba(11, 11, 12, 0.35); }
+.chip--ink { color: var(--ink); }
 .chip--ink .dot { background: var(--ink); }
 
 .btn { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; border-radius: 999px; font-weight: 700; font-size: 16px; line-height: 1; white-space: nowrap; overflow: hidden; isolation: isolate; transition: color 0.35s var(--ease), background-color 0.35s, border-color 0.35s; }
@@ -182,7 +182,8 @@ html.js.is-loading .loader { display: grid; }
 .orb--c { width: 50vw; height: 50vw; right: -14vw; top: 10vh; background: radial-gradient(circle, rgba(31, 255, 194, 0.28), transparent 65%); }
 .hero__grid { position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 72px 72px; opacity: 0.22; mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%); }
 .hero__inner { position: relative; z-index: 2; width: min(1500px, calc(100% - var(--gut) * 2)); margin: 0 auto; align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; flex: 0 1 auto; gap: 20px; }
-.hero__tag { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; padding: 8px 16px 8px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.hero__tag { display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; padding: 0; border: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.hero__tag .dot { flex: none; width: 28px; height: 2px; border-radius: 2px; box-shadow: none; animation: none; }
 .hero__title { position: relative; display: flex; flex-direction: column; flex: 1; justify-content: center; padding-block: clamp(4px, 1.5vh, 20px); }
 .hero__word { display: block; font-size: clamp(64px, 14vw, 240px); line-height: 0.95; letter-spacing: -0.045em; }
 .hero__word--a { align-self: flex-start; }
@@ -484,7 +485,7 @@ html.js.is-loading .loader { display: grid; }
 .process { background: radial-gradient(80% 60% at 90% 40%, rgba(31, 255, 194, 0.10), transparent 62%), linear-gradient(180deg, #07080a 0%, #09110f 100%); }
 .about { background: radial-gradient(60% 50% at 100% 15%, rgba(31, 255, 194, 0.12), transparent 62%), radial-gradient(55% 45% at 0% 100%, rgba(255, 138, 61, 0.08), transparent 62%), linear-gradient(180deg, #0d0f12, #0a0a0c); }
 .sec--light { background: radial-gradient(60% 55% at 100% 0%, rgba(30, 110, 255, 0.30), transparent 64%), radial-gradient(55% 50% at 0% 100%, rgba(0, 170, 255, 0.22), transparent 64%), radial-gradient(40% 35% at 50% 50%, rgba(80, 140, 255, 0.07), transparent 70%), linear-gradient(180deg, #ffffff 0%, #eef4ff 100%); }
-.sec--light .chip { border-color: rgba(0, 150, 120, 0.32); }
+.sec--light .chip { color: var(--ink); }
 .sec--light .chip .dot { background: var(--mint-d); }
 .sec--contact { background: radial-gradient(60% 75% at 78% 50%, rgba(31, 255, 194, 0.28), transparent 66%), radial-gradient(50% 60% at 4% 8%, rgba(31, 255, 194, 0.10), transparent 62%), linear-gradient(180deg, #0b0b0c 0%, #09160f 60%, #0b0b0c 100%); }
 .foot { background: linear-gradient(180deg, #0b0b0c, #08100d); }
