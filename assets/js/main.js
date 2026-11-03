@@ -228,12 +228,12 @@
       if (tl) tl.kill();
       const vw = (n) => (n * innerWidth) / 100, vh = (n) => (n * innerHeight) / 100;
       const S = {
-        hero: { x: 0, y: vh(2), scale: 0.94, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
-        manifesto: { x: vw(27), y: vh(2), scale: 0.66, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
+        hero: { x: 0, y: vh(2), scale: 0.78, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
+        manifesto: { x: vw(27), y: vh(2), scale: 0.69, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
         away1: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 0, hi: 0, orbit: 0 },
-        about: { x: -vw(25), y: vh(2), scale: 0.9, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
+        about: { x: -vw(25), y: vh(2), scale: 0.97, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
         away2: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 180, hi: 0, orbit: 0 },
-        contact: { x: vw(25), y: vh(2), scale: 0.76, rz: 3, ry: -12, o: 1, flip: 360, hi: 1, orbit: 0 },
+        contact: { x: vw(25), y: vh(2), scale: 0.8, rz: 3, ry: -12, o: 1, flip: 360, hi: 1, orbit: 0 },
         away3: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 360, hi: 0, orbit: 0 },
       };
       const apply = (s) => ({ x: s.x, y: s.y, scale: s.scale, rotationZ: s.rz, opacity: s.o });
@@ -260,36 +260,59 @@
     return () => { ScrollTrigger.removeEventListener('refresh', build); tl && tl.kill(); st.kill(); offMove(); gsap.set([card, flip, hi, chips, tilt], { clearProps: 'all' }); };
   };
 
-  /* ───────── Proceso: escena 3D fija ───────── */
+  /* ───────── Proceso: cuatro pantallas que pasan al frente (una por paso) ───────── */
   const initProcess = (pinned) => {
     const sec = $('.process');
     if (!sec) return () => {};
-    const steps = $$('.step', sec), layers = $$('.player', sec), stack = $('.pstack', sec), fill = $('.process__progress i', sec), pin = $('.process__pin', sec);
-    const setActive = (n) => { steps.forEach((s, k) => s.classList.toggle('is-active', k === n)); layers.forEach((l, k) => l.classList.toggle('is-active', k === n)); };
+    const steps = $$('.step', sec), scenes = $$('.sc3d', sec), fill = $('.process__progress i', sec), pin = $('.process__pin', sec), wrap = $('.pscene', sec);
+
+    // las pantallas se diseñan a 600 px de ancho y se escalan para caber en la columna
+    const fit = () => wrap.style.setProperty('--k', Math.min(1, Math.max(0.5, (wrap.clientWidth - 8) / 600)).toFixed(3));
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(wrap);
+    const setActive = (n) => steps.forEach((s, k) => s.classList.toggle('is-active', k === n));
+    const clean = () => { ro.disconnect(); gsap.set(scenes, { clearProps: 'all' }); sec.classList.remove('process--static'); };
+
     if (!pinned) {
       sec.classList.add('process--static');
+      gsap.set(scenes, { clearProps: 'all' });
       steps.forEach((s) => s.classList.add('is-active'));
-      layers.forEach((l) => l.classList.add('is-active'));
-      return () => { sec.classList.remove('process--static'); gsap.set(stack, { clearProps: 'all' }); };
+      return () => { clean(); steps.forEach((s, k) => s.classList.toggle('is-active', k === 0)); };
     }
+
+    // pos = paso "continuo" (0 a 3). La pantalla activa está al frente, las anteriores se van hacia atrás/arriba
+    // y las siguientes esperan detrás, asomando por la derecha.
+    const proxy = { pos: 0 };
+    const place = (pos) => scenes.forEach((el, i) => {
+      const o = i - pos;
+      if (o <= 0) {
+        const a = Math.min(1, -o);
+        gsap.set(el, { x: -70 * a, y: -100 * a, z: -300 * a, rotationX: 14 * a, rotationY: 18 * a, scale: 1 - 0.1 * a, autoAlpha: Math.max(0, 1 - a * 1.25), filter: 'none' });
+      } else {
+        gsap.set(el, { x: 56 * o, y: 38 * o, z: -170 * o, rotationX: 0, rotationY: -9 * o, scale: 1 - 0.05 * o, autoAlpha: Math.min(1, Math.max(0, 2.7 - o)), filter: `brightness(${(1 - 0.3 * Math.min(o, 2)).toFixed(2)})` });
+      }
+    });
+    place(0);
     setActive(0);
     let cur = 0;
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: pin, start: 'top top', end: '+=460%', pin: true, scrub: 0.6, anticipatePin: 1,
-        onUpdate: (self) => {
-          const t = self.progress * 10;
-          const idx = t >= 9 ? 3 : Math.min(3, Math.max(0, Math.floor((t - 0.6) / 2.1)));
-          if (idx !== cur) { cur = idx; setActive(idx); }
-        },
-      },
+      onUpdate: () => { place(proxy.pos); const n = Math.round(proxy.pos); if (n !== cur) { cur = n; setActive(n); } },
+      scrollTrigger: { trigger: pin, start: 'top top', end: '+=400%', pin: true, scrub: 0.6, anticipatePin: 1 },
     });
-    tl.fromTo(stack, { '--gap': '4px', '--rx': '72deg', '--rz': '-58deg', '--sc': 0.82 }, { '--gap': '96px', '--rx': '58deg', '--rz': '-38deg', '--sc': 1, duration: 1, ease: 'power2.out' }, 0)
-      .to(stack, { '--rz': '-30deg', '--rx': '54deg', duration: 8 }, 1)
-      .to(stack, { '--gap': '14px', '--rx': '6deg', '--rz': '0deg', '--sc': 1.05, duration: 1, ease: 'power2.inOut' }, 9)
-      .fromTo(fill, { scaleY: 0 }, { scaleY: 1, duration: 10 }, 0);
-    return () => { tl.scrollTrigger && tl.scrollTrigger.kill(true); tl.kill(); sec.classList.remove('process--static'); gsap.set([stack, fill], { clearProps: 'all' }); steps.forEach((s, k) => s.classList.toggle('is-active', k === 0)); layers.forEach((l) => l.classList.remove('is-active')); };
+    tl.to(proxy, { pos: 1, duration: 1, ease: 'power2.inOut' }, 0.7)
+      .to(proxy, { pos: 2, duration: 1, ease: 'power2.inOut' }, 2.5)
+      .to(proxy, { pos: 3, duration: 1, ease: 'power2.inOut' }, 4.3)
+      .fromTo(fill, { scaleY: 0 }, { scaleY: 1, duration: 6.3 }, 0)
+      .set({}, {}, 6.3);
+    return () => {
+      if (tl.scrollTrigger) tl.scrollTrigger.kill(true);
+      tl.kill();
+      clean();
+      gsap.set(fill, { clearProps: 'all' });
+      steps.forEach((s, k) => s.classList.toggle('is-active', k === 0));
+    };
   };
 
   /* ───────── Página de proyectos ───────── */
