@@ -350,10 +350,10 @@
     const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
     const measure = () => {
       W = arc.clientWidth; H = arc.clientHeight;
-      arc.style.setProperty('--sz', Math.max(46, Math.min(80, W * 0.064)).toFixed(1) + 'px');
+      arc.style.setProperty('--sz', Math.max(52, Math.min(124, W * 0.098)).toFixed(1) + 'px');
     };
     const place = () => {
-      const cx = W / 2, cy = H * (innerWidth < 900 ? 0.68 : 0.7), rx = W * 0.47, ry = H * (innerWidth < 900 ? 0.5 : 0.6);
+      const cx = W / 2, cy = H * (innerWidth < 900 ? 0.68 : 0.72), rx = W * 0.46, ry = H * (innerWidth < 900 ? 0.5 : 0.58);
       items.forEach((el, i) => {
         const u = (((i / N + phase) % 1) + 1) % 1;            // 0 = entra por la izquierda, 1 = sale por la derecha
         const th = ((200 - 220 * u) * Math.PI) / 180;         // de 200° a -20° (por encima del centro)
