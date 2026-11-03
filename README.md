@@ -12,7 +12,7 @@ Una tarjeta 3D con el retrato recorre toda la página (se mueve, gira y se "guar
 3. **Proyectos destacados** · tarjetas apiladas con profundidad (la anterior se aleja e inclina al llegar la siguiente).
 4. **Cómo trabajo** · escena 3D fija: cuatro capas (Descubrimiento → Diseño → Desarrollo → Lanzamiento) que se separan, se iluminan una a una y al final colapsan en el sitio publicado.
 5. **Servicios** · acordeón tipográfico con barrido de color.
-6. **Sobre mí** · la tarjeta vuelve y se voltea (cara B), marquees de herramientas y contadores.
+6. **Sobre mí** · la tarjeta vuelve y se voltea (cara B); las *skills* son un arco de logos (uno por herramienta, en `assets/img/skills/`) que recorren el arco de un lado a otro y se difuminan en los extremos, con tu marca al centro; y contadores.
 7. **Contacto** · la tarjeta vuelve a la derecha, CTA magnético y marquee gigante.
 
 Página interna: **/proyectos/** con los 17 proyectos, filtros animados (Figma / Sitios web / E-commerce) y tilt en cada tarjeta.
@@ -56,3 +56,4 @@ Para agregar un proyecto: añade la imagen WebP 1200×800 en `assets/img/project
 - **Dominio**: `canonical`, `og:url`, `sitemap.xml` y `robots.txt` apuntan a `https://diegotdesigner.com/`.
 - **Analítica**: no se incluyó (el sitio actual no mostraba etiquetas visibles). Agregar GA4/Tag Manager si se necesita.
 - Las fuentes se cargan desde Google Fonts; si se quiere cero dependencias externas, hay que autoalojarlas.
+- **Logo de CapCut**: no está en los sets públicos de iconos, así que `assets/img/skills/capcut.svg` es una aproximación propia. Reemplázalo por el SVG oficial si lo tienes. Los demás logos son los oficiales de cada plataforma (repositorio público gilbarbara/logos).

@@ -393,9 +393,27 @@ html.js.is-loading .loader { display: grid; }
 .about__copy .h2 { font-size: clamp(40px, 5.6vw, 92px); margin-bottom: 6px; }
 .about__lead { font-size: clamp(22px, 2.4vw, 36px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
 .about__copy p:not(.about__lead):not(.chip) { color: var(--muted); max-width: 52ch; }
-.skills { padding-top: clamp(60px, 8vw, 120px); }
-.skills__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 70px); align-items: end; margin-bottom: clamp(30px, 4vw, 60px); }
-.skills__head p { color: var(--muted); max-width: 48ch; }
+.skills { padding-top: clamp(70px, 9vw, 130px); }
+.skills__head { display: grid; justify-items: center; text-align: center; gap: 0; }
+.skills__head .chip { margin-bottom: clamp(16px, 2vw, 26px); }
+.skills__title { font: 800 clamp(32px, 4.6vw, 70px) / 1.03 var(--f-body); letter-spacing: -0.035em; max-width: 17ch; margin: 0 0 clamp(14px, 1.6vw, 22px); }
+.skills__lead { color: var(--muted); max-width: 54ch; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.5; }
+
+/* arco de herramientas: los logos recorren el arco de un lado a otro y se difuminan en los extremos */
+.arc { --sz: 64px; position: relative; width: min(1180px, calc(100% - var(--gut) * 2)); aspect-ratio: 1180 / 600; margin: clamp(26px, 4vw, 56px) auto 0; }
+.arc__track { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.arc__item { position: absolute; left: 0; top: 0; width: var(--sz); height: var(--sz); margin: calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2); border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #fbfbf8, #ecece7); box-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.65), inset 0 0 0 1px rgba(255, 255, 255, 0.7); opacity: 0; will-change: transform, opacity, filter; cursor: default; }
+.arc__item img { width: 54%; height: 54%; object-fit: contain; }
+.arc__item::after { content: attr(data-name); position: absolute; top: calc(100% + 10px); left: 50%; transform: translate(-50%, -4px); padding: 5px 12px; border-radius: 999px; background: rgba(8, 8, 10, 0.92); border: 1px solid var(--line); color: var(--txt); font: 600 12px var(--f-body); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s var(--ease); }
+.arc__item:hover::after { opacity: 1; transform: translate(-50%, 0); }
+.arc__core { position: absolute; left: 50%; top: 70%; width: 0; height: 0; }
+.arc__halo { position: absolute; left: 50%; top: 50%; width: clamp(150px, 20vw, 260px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(31, 255, 194, 0.32) 0%, rgba(31, 255, 194, 0.12) 45%, transparent 70%); animation: halo 5s ease-in-out infinite; }
+@keyframes halo { 50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.8; } }
+.arc__disc { position: absolute; left: 50%; top: 50%; width: clamp(88px, 11vw, 136px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; background: radial-gradient(circle at 50% 30%, #1a1f24, #0b0d10 70%); box-shadow: 0 0 0 clamp(8px, 1vw, 14px) rgba(31, 255, 194, 0.20), 0 0 0 clamp(9px, 1.1vw, 15px) rgba(31, 255, 194, 0.28), 0 30px 60px -20px rgba(0, 0, 0, 0.8); }
+.arc__disc img { width: 40%; height: auto; }
+.arc__caption { position: absolute; left: 50%; top: calc(70% + clamp(70px, 8.6vw, 104px)); transform: translateX(-50%); width: min(520px, 90%); text-align: center; display: grid; gap: 6px; }
+.arc__caption b { font: 800 clamp(18px, 2vw, 30px) / 1.1 var(--f-body); letter-spacing: -0.03em; }
+.arc__caption span { color: var(--muted); font-size: clamp(13px, 1.05vw, 15px); }
 .marquee { overflow: clip; padding: 10px 0; }
 .marquee__track { display: flex; width: max-content; animation: marq 46s linear infinite; will-change: transform; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
@@ -508,7 +526,9 @@ html.js.is-loading .loader { display: grid; }
   .about__main { grid-template-columns: 1fr; min-height: 0; }
   .about__photo { display: block; border-radius: var(--r); overflow: hidden; border: 2px solid var(--mint); max-width: 420px; }
   .about__copy { grid-column: 1; }
-  .skills__head { grid-template-columns: 1fr; }
+  .arc { aspect-ratio: 1 / 1.02; }
+  .arc__core { top: 68%; }
+  .arc__caption { top: calc(68% + 70px); }
   .stats { grid-template-columns: 1fr; }
   .contact__inner { min-height: 0; }
   .foot__grid { grid-template-columns: 1fr; }

@@ -341,6 +341,44 @@
     };
   };
 
+  /* ───────── Skills: logos que recorren un arco y se difuminan en los extremos ───────── */
+  const initArc = () => {
+    const arc = $('[data-arc]');
+    if (!arc) return;
+    const items = $$('.arc__item', arc), N = items.length;
+    let W = 0, H = 0, phase = 0.06, speed = 1, target = 1, visible = true;
+    const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const measure = () => {
+      W = arc.clientWidth; H = arc.clientHeight;
+      arc.style.setProperty('--sz', Math.max(46, Math.min(80, W * 0.064)).toFixed(1) + 'px');
+    };
+    const place = () => {
+      const cx = W / 2, cy = H * (innerWidth < 900 ? 0.68 : 0.7), rx = W * 0.47, ry = H * (innerWidth < 900 ? 0.5 : 0.6);
+      items.forEach((el, i) => {
+        const u = (((i / N + phase) % 1) + 1) % 1;            // 0 = entra por la izquierda, 1 = sale por la derecha
+        const th = ((200 - 220 * u) * Math.PI) / 180;         // de 200° a -20° (por encima del centro)
+        const x = cx + rx * Math.cos(th), y = cy - ry * Math.sin(th);
+        const vis = smooth(0, 0.15, u) * (1 - smooth(0.85, 1, u));
+        el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${(0.74 + 0.26 * vis).toFixed(3)})`;
+        el.style.opacity = vis.toFixed(3);
+        el.style.filter = vis < 0.985 ? `blur(${((1 - vis) * 10).toFixed(1)}px)` : 'none';
+      });
+    };
+    measure();
+    place();
+    new ResizeObserver(() => { measure(); place(); }).observe(arc);
+    if (reduce) return;
+    new IntersectionObserver((e) => { visible = e[0].isIntersecting; }, { rootMargin: '120px' }).observe(arc);
+    arc.addEventListener('pointerenter', () => { target = 0.2; });
+    arc.addEventListener('pointerleave', () => { target = 1; });
+    gsap.ticker.add((time, dt) => {
+      if (!visible) return;
+      speed += (target - speed) * 0.08;
+      phase = (phase + (dt / 1000) * speed * 0.018) % 1;      // vuelta completa en ~55 s
+      place();
+    });
+  };
+
   /* ───────── Página de proyectos ───────── */
   const initProjects = () => {
     const btns = $$('.filter'), items = $$('.gcard'), countEl = $('[data-visible-count]');
@@ -430,7 +468,7 @@
   });
 
   initReveals();
-  if (page === 'home') initHeroScrub();
+  if (page === 'home') { initHeroScrub(); initArc(); }
   if (page === 'projects') initProjects();
 
   addEventListener('load', () => ScrollTrigger.refresh());
