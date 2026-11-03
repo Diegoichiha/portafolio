@@ -56,7 +56,7 @@ def featured_cards(root):
       <a class="btn btn--line" href="{esc(p["url"])}" target="_blank" rel="noopener noreferrer" data-cursor="Abrir">{esc(p["cta"])} {ARROW}</a>
     </div>
     <a class="pcard__media" href="{esc(p["url"])}" target="_blank" rel="noopener noreferrer" data-tilt data-cursor="Ver" tabindex="-1" aria-hidden="true">
-      <img src="{root}assets/img/projects/{p["slug"]}.webp" alt="{esc(p["alt"])}" width="1200" height="800" loading="lazy" decoding="async">
+      <img src="{root}assets/img/projects/{p["slug"]}.webp" alt="{esc(p["alt"])}" width="1200" height="800" loading="eager" decoding="async">
       <span class="glare"></span>
     </a>
   </div>
