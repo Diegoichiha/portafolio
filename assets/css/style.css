@@ -216,10 +216,10 @@ html.js.is-loading .loader { display: grid; }
 .principles { padding-top: clamp(70px, 10vw, 150px); }
 .principles__title { font-size: clamp(26px, 3.2vw, 46px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; max-width: 22ch; margin-bottom: clamp(28px, 4vw, 56px); }
 .principles__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
-.pr { position: relative; background: radial-gradient(75% 65% at 88% 0%, rgba(47, 128, 255, 0.55), transparent 66%), radial-gradient(60% 50% at 0% 100%, rgba(0, 170, 255, 0.22), transparent 70%), linear-gradient(155deg, #0b1124 0%, #090c18 60%, #0c1a45 100%); color: #fff; --paper: #090c18; border-radius: var(--r); padding: clamp(22px, 2.4vw, 36px); min-height: clamp(260px, 26vw, 400px); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(80, 140, 255, 0.32); box-shadow: 0 30px 60px -28px rgba(20, 80, 220, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.07); --mint: #3b8cff; transform-style: preserve-3d; overflow: hidden; }
+.pr { position: relative; background: radial-gradient(75% 65% at 88% 0%, rgba(47, 128, 255, 0.55), transparent 66%), radial-gradient(60% 50% at 0% 100%, rgba(0, 170, 255, 0.22), transparent 70%), linear-gradient(155deg, #0b1124 0%, #090c18 60%, #0c1a45 100%); color: #fff; --paper: #090c18; border-radius: var(--r); padding: clamp(22px, 2.4vw, 36px); min-height: clamp(260px, 26vw, 400px); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(80, 140, 255, 0.32); box-shadow: 0 30px 60px -28px rgba(20, 80, 220, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.07); transform-style: preserve-3d; overflow: hidden; }
 .pr__art { width: 78%; height: auto; color: #fff; margin: auto; }
 .pr__t { font-size: clamp(24px, 2.4vw, 38px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-.ripple { transform-box: fill-box; transform-origin: center; animation: ripple 2.4s ease-out infinite; stroke: #9cc2ff; opacity: 0; }
+.ripple { transform-box: fill-box; transform-origin: center; animation: ripple 2.4s ease-out infinite; stroke: var(--mint); opacity: 0; }
 .ripple--2 { animation-delay: 1.2s; }
 @keyframes ripple { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(3.4); opacity: 0; } }
 
@@ -467,8 +467,8 @@ html.js.is-loading .loader { display: grid; }
 .process { background: radial-gradient(80% 60% at 90% 40%, rgba(31, 255, 194, 0.10), transparent 62%), linear-gradient(180deg, #07080a 0%, #09110f 100%); }
 .about { background: radial-gradient(60% 50% at 100% 15%, rgba(31, 255, 194, 0.12), transparent 62%), radial-gradient(55% 45% at 0% 100%, rgba(255, 138, 61, 0.08), transparent 62%), linear-gradient(180deg, #0d0f12, #0a0a0c); }
 .sec--light { background: radial-gradient(60% 55% at 100% 0%, rgba(30, 110, 255, 0.30), transparent 64%), radial-gradient(55% 50% at 0% 100%, rgba(0, 170, 255, 0.22), transparent 64%), radial-gradient(40% 35% at 50% 50%, rgba(80, 140, 255, 0.07), transparent 70%), linear-gradient(180deg, #ffffff 0%, #eef4ff 100%); }
-.sec--light .chip { border-color: rgba(30, 90, 220, 0.3); }
-.sec--light .chip .dot { background: #1f6bff; }
+.sec--light .chip { border-color: rgba(0, 150, 120, 0.32); }
+.sec--light .chip .dot { background: var(--mint-d); }
 .sec--contact { background: radial-gradient(60% 75% at 78% 50%, rgba(31, 255, 194, 0.28), transparent 66%), radial-gradient(50% 60% at 4% 8%, rgba(31, 255, 194, 0.10), transparent 62%), linear-gradient(180deg, #0b0b0c 0%, #09160f 60%, #0b0b0c 100%); }
 .foot { background: linear-gradient(180deg, #0b0b0c, #08100d); }
 .menu { background: radial-gradient(70% 60% at 90% 0%, rgba(31, 255, 194, 0.14), transparent 60%), linear-gradient(180deg, #0e1013, #0a0a0c); }

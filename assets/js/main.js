@@ -138,7 +138,7 @@
   $$('.marquee__track').forEach((tr) => {
     const orig = tr.innerHTML;
     const w1 = tr.scrollWidth || 600;
-    const k = Math.max(1, Math.ceil((innerWidth * 1.1) / w1));
+    const k = Math.max(1, Math.ceil((Math.max(innerWidth, screen.width || 0) * 1.1) / w1));
     tr.innerHTML = orig.repeat(k * 2);
     const half = tr.children.length / 2;
     [...tr.children].forEach((c, i) => { if (i >= half) c.setAttribute('aria-hidden', 'true'); });
@@ -201,15 +201,21 @@
 
   /* ───────── Proyectos destacados: tarjetas apiladas ───────── */
   const initStack = () => {
-    if (reduce || innerWidth < 900) return;
-    const cards = $$('.pcard');
+    // se crea dentro de gsap.matchMedia (escritorio sin reducción de movimiento): reacciona a cambios de ancho
+    const cards = $$('.pcard'), inners = [];
     cards.forEach((c, i) => {
       const next = cards[i + 1];
       if (!next) return;
       const inner = $('.pcard__inner', c);
       gsap.set(inner, { transformPerspective: 1400 });
-      gsap.to(inner, { scale: 0.92, rotationX: 5, filter: 'brightness(0.42)', ease: 'none', scrollTrigger: { trigger: next, start: 'top 88%', end: 'top 16%', scrub: true } });
+      // valor de partida explícito: desde `filter: none` GSAP arrancaba en brightness(0) (negro puro)
+      gsap.fromTo(inner, { scale: 1, rotationX: 0, filter: 'brightness(1)' }, { scale: 0.93, rotationX: 4, filter: 'brightness(0.5)', ease: 'none', scrollTrigger: { trigger: next, start: 'top 88%', end: 'top 16%', scrub: true } });
+      inners.push(inner);
     });
+    return () => {
+      ScrollTrigger.getAll().filter((t) => cards.includes(t.trigger)).forEach((t) => t.kill(true));
+      gsap.set(inners, { clearProps: 'all' });
+    };
   };
 
   /* ───────── Hero y tarjeta 3D ───────── */
@@ -379,7 +385,7 @@
       if (caret) tl.to(caret, { opacity: 0, duration: 0.4 }, 0.25 + heroChars.length * 0.09 + 1);
     }
     tl.to(heroIn, { opacity: 1, y: 0, duration: 1, stagger: 0.1 }, 0.3);
-    if ($('.stage') && innerWidth >= 900) {
+    if ($('.stage') && matchMedia('(min-width: 900px)').matches) {
       tl.fromTo('.stage', { opacity: 0, y: 90, scale: 0.78 }, { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'expo.out' }, 0.1)
         .fromTo('.scard__chip', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(2)', stagger: 0.1, clearProps: 'scale,opacity' }, 0.9)
         .fromTo('.scard__hi', { scale: 0 }, { scale: 1, duration: 0.8, ease: 'back.out(2.4)', clearProps: 'scale' }, 1.3);
@@ -413,7 +419,8 @@
   mm.add('(min-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
     const offProcess = page === 'home' ? initProcess(true) : () => {};
     const offJourney = page === 'home' ? initJourney() : () => {};
-    return () => { offJourney(); offProcess(); };
+    const offStack = page === 'home' ? initStack() : () => {};
+    return () => { offStack(); offJourney(); offProcess(); };
   });
   mm.add('(max-width: 899px), (prefers-reduced-motion: reduce)', () => (page === 'home' ? initProcess(false) : undefined));
   mm.add('(min-width: 900px) and (prefers-reduced-motion: reduce)', () => {
@@ -423,7 +430,7 @@
   });
 
   initReveals();
-  if (page === 'home') { initHeroScrub(); initStack(); }
+  if (page === 'home') initHeroScrub();
   if (page === 'projects') initProjects();
 
   addEventListener('load', () => ScrollTrigger.refresh());
