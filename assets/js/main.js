@@ -346,7 +346,6 @@
         .fromTo('.scard__chip', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(2)', stagger: 0.1, clearProps: 'scale,opacity' }, 0.9)
         .fromTo('.scard__hi', { scale: 0 }, { scale: 1, duration: 0.8, ease: 'back.out(2.4)', clearProps: 'scale' }, 1.3);
     }
-    if (page === 'projects') tl.from('.gcard:nth-child(-n+3)', { y: 60, opacity: 0, duration: 1, stagger: 0.1 }, 0.7);
     return tl;
   };
 

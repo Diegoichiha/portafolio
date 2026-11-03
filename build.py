@@ -68,12 +68,14 @@ def featured_cards(root):
 def grid_cards(root):
     out = []
     for p in projects:
+        # el año es opcional: si no se conoce, solo se muestra la categoría
+        kind_line = esc(p["kindLabel"]) + (f' · {p["year"]}' if p.get("year") else "")
         out.append(
             f'''<article class="gcard" data-kind="{p["kind"]}">
   <a class="gcard__link" href="{esc(p["url"])}" target="_blank" rel="noopener noreferrer" data-cursor="Ver">
     <div class="gcard__media" data-tilt><img src="{root}assets/img/projects/{p["slug"]}.webp" alt="{esc(p["alt"])}" width="1200" height="800" loading="lazy" decoding="async"><span class="glare"></span></div>
     <div class="gcard__meta">
-      <div><h3 class="gcard__title">{esc(p["title"])}</h3><p class="gcard__kind">{esc(p["kindLabel"])} · {p["year"]}</p></div>
+      <div><h3 class="gcard__title">{esc(p["title"])}</h3><p class="gcard__kind">{kind_line}</p></div>
       <span class="gcard__go">{ARROW}</span>
     </div>
   </a>
