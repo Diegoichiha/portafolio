@@ -201,7 +201,7 @@
     if (reduce || !$('.hero')) return;
     const t = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
     gsap.to('.hero__word--a', { xPercent: -16, ease: 'none', scrollTrigger: t });
-    gsap.to('.hero__word--b', { xPercent: 16, ease: 'none', scrollTrigger: t });
+    gsap.to('.hero__word--b', { xPercent: -10, ease: 'none', scrollTrigger: t });
     gsap.to('.hero__foot, .hero__tag', { opacity: 0, y: -50, ease: 'none', scrollTrigger: { ...t, end: '60% top' } });
   };
 
@@ -228,7 +228,7 @@
       if (tl) tl.kill();
       const vw = (n) => (n * innerWidth) / 100, vh = (n) => (n * innerHeight) / 100;
       const S = {
-        hero: { x: 0, y: vh(2), scale: 0.78, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
+        hero: { x: vw(23), y: vh(2), scale: 1, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
         manifesto: { x: vw(27), y: vh(2), scale: 0.69, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
         away1: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 0, hi: 0, orbit: 0 },
         about: { x: -vw(25), y: vh(2), scale: 0.97, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
@@ -244,7 +244,11 @@
         tl.fromTo(chips, { opacity: from.orbit, scale: 0.5 + 0.5 * from.orbit }, { opacity: to.orbit, scale: 0.5 + 0.5 * to.orbit, duration: dur, immediateRender: false }, at);
       };
       tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
-      tl.set(card, apply(S.hero), 0).set(flip, { rotationY: 0 }, 0);
+      // estado inicial del hero (un timeline pausado en t=0 no renderiza por sí solo)
+      const h0 = S.hero;
+      gsap.set(card, apply(h0)); gsap.set(flip, { rotationY: h0.flip + h0.ry });
+      gsap.set(hi, { opacity: h0.hi, scale: 0.4 + 0.6 * h0.hi }); gsap.set(chips, { opacity: h0.orbit, scale: 0.5 + 0.5 * h0.orbit });
+      tl.set(card, apply(S.hero), 0).set(flip, { rotationY: h0.flip + h0.ry }, 0);
       const win = (k) => { const t = stop(k); return [t - vh(92), vh(58)]; };
       const seq = [['manifesto', 'hero', 'manifesto'], ['away1', 'manifesto', 'away1'], ['about', 'away1', 'about'], ['away2', 'about', 'away2'], ['contact', 'away2', 'contact']];
       seq.forEach(([k, a, b]) => { const [at, d] = win(k); seg(Math.max(0, at), S[a], S[b], d); });
