@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+{{head}}
+</head>
+<body data-page="home">
+<noscript><style>.loader{display:none}.is-loading{overflow:auto}</style></noscript>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <span class="loader__label">Diego Torres · UX/UI</span>
+    <span class="loader__count"><b>0</b><i>%</i></span>
+  </div>
+  <span class="loader__bar"><i></i></span>
+</div>
+
+{{header}}
+
+<!-- Tarjeta 3D que acompaña toda la historia (se mueve y gira con el scroll) -->
+<div class="stage" aria-hidden="true">
+  <div class="scard">
+    <div class="scard__tilt">
+      <div class="scard__flip">
+        <div class="scard__face scard__face--front">
+          <div class="scard__plate"><span class="scard__ring scard__ring--a"></span><span class="scard__ring scard__ring--b"></span><span class="scard__shine"></span></div>
+          <img class="scard__cutout" src="assets/img/diego-front.webp" alt="" width="800" height="991" fetchpriority="high">
+          <span class="scard__chip scard__chip--a">UI/UX</span>
+          <span class="scard__chip scard__chip--b">Web</span>
+          <span class="scard__chip scard__chip--c">Branding</span>
+          <span class="scard__chip scard__chip--d">Ads</span>
+        </div>
+        <div class="scard__face scard__face--back"><img src="assets/img/diego-back.webp" alt="" width="450" height="520"></div>
+      </div>
+      <div class="scard__hi"><span class="scard__wave">👋</span><b>Hola</b></div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ───────────── HERO ───────────── -->
+  <section class="hero sec--dark" id="inicio" data-section="hero">
+    <div class="hero__bg" aria-hidden="true"><span class="orb orb--a"></span><span class="orb orb--b"></span><span class="hero__grid"></span></div>
+    <div class="hero__inner">
+      <p class="hero__tag" data-hero-in><i class="dot dot--pulse"></i> Especialista en diseño UX/UI</p>
+      <h1 class="hero__title" aria-label="Diego Torres">
+        <span class="hero__word hero__word--a" aria-hidden="true" data-chars>DIEGO</span>
+        <span class="hero__word hero__word--b" aria-hidden="true" data-chars>TORRES</span>
+      </h1>
+      <figure class="hero__photo" aria-hidden="true"><img src="assets/img/diego-front.webp" alt="" width="800" height="991" decoding="async"></figure>
+      <div class="hero__foot">
+        <p class="hero__lead" data-hero-in>Diseño y desarrollo experiencias digitales que convierten visitantes en clientes</p>
+        <p class="hero__sub" data-hero-in>Combino UI/UX, desarrollo web y estrategia digital para crear sitios que no solo se ven bien, sino que generan resultados medibles.</p>
+        <a class="btn btn--mint" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer" data-magnetic data-hero-in>Hablemos de tu proyecto {{arrow}}</a>
+      </div>
+      <div class="hero__scroll" aria-hidden="true" data-hero-in><span>Scroll</span><i></i></div>
+    </div>
+  </section>
+
+  <!-- ───────────── ¿POR QUÉ ELEGIRME? ───────────── -->
+  <section class="manifesto sec--light" id="por-que" data-section="manifesto">
+    <div class="wrap manifesto__lead" data-card-stop="manifesto">
+      <p class="chip" data-reveal><i class="dot"></i> ¿Por qué elegirme?</p>
+      <h2 class="h2" data-split>No se trata solo de diseño, se trata de resultados</h2>
+      <p class="manifesto__text" data-scrub-words>Hoy en día, tener una web no es suficiente. El verdadero reto es lograr que funcione, por eso, mi enfoque no se queda en lo visual. Trabajo cada proyecto desde la estrategia, la experiencia de usuario y la optimización para conversión.</p>
+    </div>
+
+    <div class="wrap principles" data-card-stop="away1">
+      <h3 class="principles__title" data-split>Cada decisión de diseño tiene un propósito:</h3>
+      <div class="principles__grid">
+        <article class="pr" data-tilt data-reveal>
+          <span class="pr__n">01</span>
+          <svg class="pr__art" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="24" cy="92" r="7" fill="var(--mint)" stroke="none"/>
+            <path class="draw" d="M24 92C60 92 56 40 96 44S140 88 168 40"/>
+            <circle cx="96" cy="44" r="3.5" fill="currentColor" stroke="none"/>
+            <path class="draw" d="M168 40V16"/>
+            <path d="M168 16l24 7-24 7z" fill="var(--mint)" stroke="none"/>
+          </svg>
+          <h4 class="pr__t">Guiar al usuario</h4>
+          <span class="glare"></span>
+        </article>
+        <article class="pr" data-tilt data-reveal>
+          <span class="pr__n">02</span>
+          <svg class="pr__art" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="34" y="40" width="132" height="42" rx="21" fill="var(--mint)" stroke="none"/>
+            <path class="draw" d="M70 61h60"/>
+            <circle class="ripple" cx="126" cy="76" r="8"/>
+            <circle class="ripple ripple--2" cx="126" cy="76" r="8"/>
+            <path d="M120 68v36l10-9 8 15 7-3-8-15 13-1z" fill="currentColor" stroke="var(--paper)" stroke-width="2"/>
+          </svg>
+          <h4 class="pr__t">Generar acción</h4>
+          <span class="glare"></span>
+        </article>
+        <article class="pr" data-tilt data-reveal>
+          <span class="pr__n">03</span>
+          <svg class="pr__art" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M24 102h152"/>
+            <rect class="bar" x="38" y="74" width="22" height="28" rx="4" fill="var(--mint)" stroke="none"/>
+            <rect class="bar" x="70" y="58" width="22" height="44" rx="4" fill="var(--mint)" stroke="none"/>
+            <rect class="bar" x="102" y="42" width="22" height="60" rx="4" fill="var(--mint)" stroke="none"/>
+            <rect class="bar" x="134" y="22" width="22" height="80" rx="4" fill="var(--mint)" stroke="none"/>
+            <path class="draw" d="M42 58l32-14 32-14 40-20"/>
+            <path class="draw" d="M150 14h-14M150 14v14"/>
+          </svg>
+          <h4 class="pr__t">Medir resultados</h4>
+          <span class="glare"></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── PROYECTOS DESTACADOS ───────────── -->
+  <section class="work sec--dark" id="proyectos" data-section="work">
+    <div class="wrap work__head">
+      <p class="chip chip--dark" data-reveal><i class="dot"></i> Proyectos destacados</p>
+      <h2 class="h2" data-split>Elevando marcas con un diseño brillante</h2>
+    </div>
+    <div class="wrap work__stack">
+{{projects_featured}}
+    </div>
+    <div class="wrap work__more">
+      <a class="btn btn--mint" href="proyectos/" data-magnetic>Explora todo mi trabajo <span class="btn__count">{{projects_count}}</span></a>
+    </div>
+  </section>
+
+  <!-- ───────────── PROCESO (escena 3D) ───────────── -->
+  <section class="process sec--dark" id="proceso" data-section="process">
+    <div class="process__pin">
+      <div class="process__bg" aria-hidden="true"><span class="orb orb--c"></span><span class="hero__grid"></span></div>
+      <div class="wrap process__grid">
+        <div class="process__copy">
+          <p class="chip chip--dark"><i class="dot"></i> Cómo trabajo</p>
+          <h2 class="h2">Mi flujo de trabajo creativo</h2>
+          <ol class="steps">
+            <li class="step is-active">
+              <div class="step__head"><span class="step__n">01</span><h3 class="step__t">Descubrimiento</h3></div>
+              <div class="step__body"><p>Me enfoco en el conocimiento profundo de tu marca, tus objetivos y tu público objetivo. Mediante consultas e investigaciones detalladas, recopilo información esencial que guía todo el proceso de diseño.</p></div>
+            </li>
+            <li class="step">
+              <div class="step__head"><span class="step__n">02</span><h3 class="step__t">Diseño</h3></div>
+              <div class="step__body"><p>Comienzo creando diseños visualmente atractivos y estratégicos. Este paso se centra en traducir ideas en conceptos visuales tangibles que se alineen con tu marca.</p></div>
+            </li>
+            <li class="step">
+              <div class="step__head"><span class="step__n">03</span><h3 class="step__t">Desarrollo</h3></div>
+              <div class="step__body"><p>Transformo los elementos visuales en un sitio web completamente funcional. Esta fase implica una codificación e integración meticulosas para garantizar que tu sitio sea adaptable y funcione a la perfección en todos los dispositivos.</p></div>
+            </li>
+            <li class="step">
+              <div class="step__head"><span class="step__n">04</span><h3 class="step__t">Lanzamiento</h3></div>
+              <div class="step__body"><p>Realizo pruebas exhaustivas del sitio web para garantizar su perfecto funcionamiento antes de su lanzamiento. Tras el lanzamiento, ofrezco asistencia y asesoramiento para ayudarte a maximizar tu presencia online.</p></div>
+            </li>
+          </ol>
+          <a class="btn btn--mint" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+        </div>
+
+        <div class="process__scene" aria-hidden="true">
+          <div class="pscene">
+            <div class="pstack">
+              <!-- Capa 1: descubrimiento -->
+              <div class="player" style="--i:0"><div class="player__body pl pl--1">
+                <span class="pl__tag">01 · Descubrimiento</span>
+                <div class="pl__notes"><i style="--x:7%;--y:32%;--r:-4deg"></i><i style="--x:36%;--y:24%;--r:3deg"></i><i style="--x:64%;--y:36%;--r:-2deg"></i><i style="--x:18%;--y:62%;--r:2deg"></i><i style="--x:50%;--y:66%;--r:-5deg"></i></div>
+                <div class="pl__who"><span></span><b></b><b></b></div>
+              </div></div>
+              <!-- Capa 2: diseño -->
+              <div class="player" style="--i:1"><div class="player__body pl pl--2">
+                <span class="pl__tag">02 · Diseño</span>
+                <div class="pl__wire">
+                  <div class="w-nav"><i></i><b></b><b></b><b></b></div>
+                  <div class="w-hero"><span></span><em></em></div>
+                  <div class="w-cards"><i></i><i></i><i></i></div>
+                </div>
+              </div></div>
+              <!-- Capa 3: desarrollo -->
+              <div class="player" style="--i:2"><div class="player__body pl pl--3">
+                <span class="pl__tag">03 · Desarrollo</span>
+<pre class="pl__code" aria-hidden="true"><span class="k">&lt;section</span> <span class="a">class</span>=<span class="s">"hero"</span><span class="k">&gt;</span>
+  <span class="k">&lt;h1&gt;</span>Diseño que convierte<span class="k">&lt;/h1&gt;</span>
+  <span class="k">&lt;a</span> <span class="a">class</span>=<span class="s">"btn"</span> <span class="a">href</span>=<span class="s">"#"</span><span class="k">&gt;</span>
+    Hablemos
+  <span class="k">&lt;/a&gt;</span>
+<span class="k">&lt;/section&gt;</span>
+<span class="c">/* responsive · rápido · accesible */</span></pre>
+              </div></div>
+              <!-- Capa 4: lanzamiento -->
+              <div class="player" style="--i:3"><div class="player__body pl pl--4">
+                <span class="pl__tag">04 · Lanzamiento</span>
+                <div class="pl__browser">
+                  <div class="b-bar"><i></i><i></i><i></i><span>tusitio.com</span></div>
+                  <div class="b-page"><h5>Tu marca,<br>en línea.</h5><span class="b-btn"></span></div>
+                </div>
+                <div class="pl__score"><span class="ring"><b>100</b></span><em><i class="dot dot--pulse"></i> En línea</em></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="process__progress" aria-hidden="true"><i></i></div>
+    </div>
+  </section>
+
+  <!-- ───────────── SERVICIOS ───────────── -->
+  <section class="services sec--light" id="servicios" data-section="services">
+    <div class="wrap">
+      <p class="chip" data-reveal><i class="dot"></i> Lo que ofrezco</p>
+      <h2 class="h2" data-split>Potenciando las marcas a través del marketing comunicativo</h2>
+
+      <ul class="svc-list">
+        <li class="svc is-open" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="true" aria-controls="svc-1" id="svc-b1" data-cursor="Abrir">
+            <span class="svc__n">01</span><span class="svc__t">Diseño web</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-1" role="region" aria-labelledby="svc-b1"><div class="svc__in">
+            <p>Crear sitios web visualmente impactantes y fáciles de usar es la esencia de mi trabajo.</p>
+            <ul class="checks"><li>Diseño personalizado a medida</li><li>Diseños adaptables</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+        <li class="svc" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="false" aria-controls="svc-2" id="svc-b2" data-cursor="Abrir">
+            <span class="svc__n">02</span><span class="svc__t">Desarrollo</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-2" role="region" aria-labelledby="svc-b2"><div class="svc__in">
+            <p>Doy vida a tus diseños con CMS (WordPress - Shopify), eficiente y de alto rendimiento.</p>
+            <ul class="checks"><li>HTML, CSS, hosting y dominio</li><li>Compatibilidad con diferentes navegadores</li><li>Tiempos de carga más rápidos</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+        <li class="svc" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="false" aria-controls="svc-3" id="svc-b3" data-cursor="Abrir">
+            <span class="svc__n">03</span><span class="svc__t">Identidad de marca</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-3" role="region" aria-labelledby="svc-b3"><div class="svc__in">
+            <p>Crear una identidad de marca sólida es esencial para destacar en un mercado saturado.</p>
+            <ul class="checks"><li>Diseño de logotipos</li><li>Paletas de colores coherentes</li><li>Directrices de marca</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+        <li class="svc" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="false" aria-controls="svc-4" id="svc-b4" data-cursor="Abrir">
+            <span class="svc__n">04</span><span class="svc__t">Diseño gráfico</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-4" role="region" aria-labelledby="svc-b4"><div class="svc__in">
+            <p>Creo piezas gráficas pensadas para captar la atención y fortalecer la identidad visual de tu negocio, tanto en digital como en físico.</p>
+            <ul class="checks"><li>Diseño de piezas para redes sociales</li><li>Diseño de piezas para páginas web</li><li>Diseño para impresos en gran formato</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+        <li class="svc" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="false" aria-controls="svc-5" id="svc-b5" data-cursor="Abrir">
+            <span class="svc__n">05</span><span class="svc__t">Marketing estratégico</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-5" role="region" aria-labelledby="svc-b5"><div class="svc__in">
+            <p>Diseñamos la estrategia de marketing que tu negocio necesita para crecer.</p>
+            <ul class="checks"><li>Diseño de la estrategia</li><li>Implementación con acompañamiento</li><li>Análisis y ajustes</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+        <li class="svc" data-reveal>
+          <h3 class="svc__head"><button class="svc__btn" type="button" aria-expanded="false" aria-controls="svc-6" id="svc-b6" data-cursor="Abrir">
+            <span class="svc__n">06</span><span class="svc__t">Publicidad Ads</span><span class="svc__plus" aria-hidden="true"></span>
+          </button></h3>
+          <div class="svc__panel" id="svc-6" role="region" aria-labelledby="svc-b6"><div class="svc__in">
+            <p>Lleva tu negocio al siguiente nivel con campañas de publicidad paga que sí funcionan.</p>
+            <ul class="checks"><li>Meta Ads (Facebook e Instagram)</li><li>TikTok Ads</li><li>Google Ads (Búsqueda, Display, YouTube)</li></ul>
+            <a class="btn btn--ink" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+          </div></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────── SOBRE MÍ ───────────── -->
+  <section class="about sec--dark" id="sobre-mi" data-section="about">
+    <div class="wrap about__main" data-card-stop="about">
+      <figure class="about__photo"><img src="assets/img/diego-back.webp" alt="Retrato de Diego Torres, diseñador UX/UI y desarrollador web" width="450" height="520" loading="lazy"></figure>
+      <div class="about__copy">
+        <p class="chip chip--dark" data-reveal><i class="dot"></i> ¿Quién soy?</p>
+        <h2 class="h2" data-split>Acerca de mí</h2>
+        <p class="about__lead" data-reveal>Soy diseñador UI/UX y desarrollador web con enfoque en estrategia digital.</p>
+        <p data-reveal>Trabajo creando experiencias que conectan diseño, tecnología y marketing, con un objetivo claro: generar resultados reales.</p>
+        <p data-reveal>He participado en proyectos donde el diseño no solo cumple una función estética, sino que impacta directamente en la forma en que los usuarios interactúan, compran o toman decisiones.</p>
+      </div>
+    </div>
+
+    <div class="skills" data-card-stop="away2">
+      <div class="wrap skills__head">
+        <h3 class="h3" data-split>Skills</h3>
+        <p data-reveal>Más que herramientas, son las habilidades que utilizo para diseñar, desarrollar y optimizar experiencias digitales enfocadas en resultados.</p>
+      </div>
+      <div class="marquee" aria-label="Herramientas y habilidades">
+        <div class="marquee__track" data-dir="1">
+          <span>Figma</span><span>Shopify</span><span>WordPress</span><span>Adobe Photoshop</span><span>Adobe Illustrator</span><span>Adobe Premiere</span>
+        </div>
+      </div>
+      <div class="marquee marquee--alt" aria-hidden="true">
+        <div class="marquee__track" data-dir="-1">
+          <span>Adobe After Effects</span><span>CapCut</span><span>Google Ads</span><span>Google Tag Manager</span><span>Meta Ads</span><span>UI/UX</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap stats">
+      <div class="stat" data-reveal><b class="stat__n" data-count="12" data-suffix="+">12+</b><span class="stat__l">Años de experiencia</span><p>En la realización y acompañamiento de proyectos excepcionales.</p></div>
+      <div class="stat" data-reveal><b class="stat__n" data-count="30" data-suffix="+">30+</b><span class="stat__l">Proyectos entregados</span><p>Con éxito en diferentes sectores.</p></div>
+      <div class="stat" data-reveal><b class="stat__n" data-count="98" data-suffix="%">98%</b><span class="stat__l">Clientes satisfechos</span><p>Un enfoque centrado en resultados.</p></div>
+    </div>
+  </section>
+
+  <!-- ───────────── CONTACTO ───────────── -->
+  <section class="contact sec--mint" id="contacto" data-section="contact">
+    <div class="wrap contact__inner" data-card-stop="contact">
+      <p class="chip chip--ink" data-reveal><i class="dot"></i> Trabajemos juntos</p>
+      <h2 class="contact__title" data-split>¿Tienes un proyecto en mente?</h2>
+      <p class="contact__text" data-reveal>Si estás buscando mejorar tu sitio web, lanzar un nuevo proyecto o trabajar en la optimización de tu presencia digital, podemos hablar.</p>
+      <div class="contact__actions" data-reveal>
+        <a class="btn btn--ink btn--lg" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer" data-magnetic>Hablemos de tu proyecto {{arrow}}</a>
+        <a class="link-u link-u--ink" href="{{linkedin}}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+    <div class="contact__marquee" aria-hidden="true">
+      <div class="marquee__track" data-dir="-1"><span>¿Hablamos?</span><span>Let’s talk</span><span>¿Hablamos?</span><span>Let’s talk</span></div>
+    </div>
+  </section>
+
+</main>
+
+{{footer}}
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/js/main.js?v={{v}}"></script>
+</body>
+</html>

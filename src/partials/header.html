@@ -1,0 +1,32 @@
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="noise" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i></i></div>
+<div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"><b class="cursor__label"></b></span></div>
+
+<header class="pill" id="top">
+  <a class="pill__brand" href="{{root}}" aria-label="Diego Torres, inicio" data-cursor="Inicio">
+    <span class="pill__avatar"><img src="{{root}}assets/img/diego-front.webp" alt="" width="80" height="99"></span>
+    <span class="pill__name">Diego Torres</span>
+  </a>
+  <span class="pill__status"><i class="dot dot--pulse"></i><span>Disponible para proyectos</span></span>
+  <button class="pill__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+    <span></span><span></span>
+  </button>
+</header>
+
+<nav class="menu" id="menu" aria-label="Menú principal" aria-hidden="true">
+  <div class="menu__inner">
+    <ul class="menu__list">
+      <li><a href="{{root}}" data-menu><span class="menu__n">01</span><span class="menu__t">Inicio</span></a></li>
+      <li><a href="{{root}}proyectos/" data-menu><span class="menu__n">02</span><span class="menu__t">Proyectos</span></a></li>
+      <li><a href="{{root}}#servicios" data-menu><span class="menu__n">03</span><span class="menu__t">Servicios</span></a></li>
+      <li><a href="{{root}}#proceso" data-menu><span class="menu__n">04</span><span class="menu__t">Proceso</span></a></li>
+      <li><a href="{{root}}#sobre-mi" data-menu><span class="menu__n">05</span><span class="menu__t">Sobre mí</span></a></li>
+      <li><a href="{{root}}#contacto" data-menu><span class="menu__n">06</span><span class="menu__t">Contacto</span></a></li>
+    </ul>
+    <div class="menu__foot">
+      <a class="btn btn--mint" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer">Hablemos de tu proyecto {{arrow}}</a>
+      <a class="link-u" href="{{linkedin}}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</nav>

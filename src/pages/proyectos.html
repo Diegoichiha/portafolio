@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+{{head}}
+</head>
+<body data-page="projects">
+<noscript><style>.loader{display:none}.is-loading{overflow:auto}</style></noscript>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <span class="loader__label">Proyectos · Diego Torres</span>
+    <span class="loader__count"><b>0</b><i>%</i></span>
+  </div>
+  <span class="loader__bar"><i></i></span>
+</div>
+
+{{header}}
+
+<main id="main">
+  <section class="phead sec--dark">
+    <div class="hero__bg" aria-hidden="true"><span class="orb orb--a"></span><span class="hero__grid"></span></div>
+    <div class="wrap phead__inner">
+      <p class="chip chip--dark" data-hero-in><i class="dot"></i> Portafolio</p>
+      <h1 class="phead__title" aria-label="Proyectos"><span data-chars aria-hidden="true">PROYECTOS</span><sup class="phead__count" data-hero-in>{{projects_count}}</sup></h1>
+      <p class="phead__lead" data-hero-in>Sitios web, tiendas virtuales y prototipos pensados para guiar al usuario, generar acción y medir resultados.</p>
+    </div>
+  </section>
+
+  <section class="pgrid sec--dark">
+    <div class="wrap">
+      <div class="filters" role="group" aria-label="Filtrar proyectos">
+        <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="filter" type="button" data-filter="figma" aria-pressed="false">Prototipos Figma</button>
+        <button class="filter" type="button" data-filter="web" aria-pressed="false">Sitios web informativos</button>
+        <button class="filter" type="button" data-filter="shop" aria-pressed="false">E-commerce</button>
+        <span class="filters__count" aria-live="polite"><b data-visible-count>{{projects_count}}</b> proyectos</span>
+      </div>
+      <div class="gcards">
+{{projects_grid}}
+      </div>
+    </div>
+  </section>
+
+  <section class="contact contact--page sec--mint" id="contacto">
+    <div class="wrap contact__inner">
+      <p class="chip chip--ink" data-reveal><i class="dot"></i> Trabajemos juntos</p>
+      <h2 class="contact__title" data-split>¿Tienes un proyecto en mente?</h2>
+      <p class="contact__text" data-reveal>Si estás buscando mejorar tu sitio web, lanzar un nuevo proyecto o trabajar en la optimización de tu presencia digital, podemos hablar.</p>
+      <div class="contact__actions" data-reveal>
+        <a class="btn btn--ink btn--lg" href="{{whatsapp}}" target="_blank" rel="noopener noreferrer" data-magnetic>Hablemos de tu proyecto {{arrow}}</a>
+        <a class="link-u link-u--ink" href="{{linkedin}}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+    <div class="contact__marquee" aria-hidden="true">
+      <div class="marquee__track" data-dir="-1"><span>¿Hablamos?</span><span>Let’s talk</span><span>¿Hablamos?</span><span>Let’s talk</span></div>
+    </div>
+  </section>
+</main>
+
+{{footer}}
+
+<script src="{{root}}assets/vendor/gsap.min.js"></script>
+<script src="{{root}}assets/vendor/ScrollTrigger.min.js"></script>
+<script src="{{root}}assets/vendor/lenis.min.js"></script>
+<script src="{{root}}assets/js/main.js?v={{v}}"></script>
+</body>
+</html>
