@@ -20,7 +20,7 @@ Página interna: **/proyectos/** con los 17 proyectos, filtros animados (Figma /
 ## Tecnología
 
 - HTML/CSS/JS vanilla, sin framework. `GSAP 3.12 + ScrollTrigger + Lenis` vendorizados en `assets/vendor/`.
-- Tipografías (Google Fonts): Bricolage Grotesque (display condensado), Figtree (texto, la de la marca actual), JetBrains Mono.
+- Tipografías (Google Fonts): Figtree para todo (títulos en negrita 800, minúsculas y tracking cerrado; es la de la marca actual) y JetBrains Mono en detalles técnicos. Los títulos se "escriben" palabra por palabra con el scroll (`scrubWords` en `main.js`).
 - Colores de la marca actual: negro `#111`/`#0b0b0c` y verde menta `#1fffc2`.
 - Accesible por defecto: `prefers-reduced-motion` desactiva Lenis, pines y la tarjeta viajera; en móvil (<900 px) no hay pines ni tarjeta fija (retrato estático) y el proceso se muestra completo.
 

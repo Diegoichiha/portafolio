@@ -106,11 +106,27 @@
   }
 
   /* ───────── Texto: partir en palabras / letras ───────── */
-  const words = (el, cls, wrap) => {
-    const text = el.textContent.trim().replace(/\s+/g, ' ');
-    el.setAttribute('aria-label', text);
-    el.innerHTML = text.split(' ').map((w) => (wrap ? `<span class="w" aria-hidden="true"><span class="wi">${w}</span></span>` : `<span class="${cls}" aria-hidden="true">${w}</span>`)).join(' ');
-    return $$(wrap ? '.wi' : '.' + cls, el);
+  // Parte el texto en palabras conservando el marcado interno (<em>, <br>) para el efecto de "escritura" con scroll
+  const scrubWords = (el) => {
+    el.setAttribute('aria-label', el.textContent.trim().replace(/\s+/g, ' '));
+    const out = [];
+    const walk = (node) => {
+      [...node.childNodes].forEach((n) => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const w = document.createElement('span');
+            w.className = 'sw'; w.setAttribute('aria-hidden', 'true'); w.textContent = part;
+            frag.appendChild(w); out.push(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+      });
+    };
+    walk(el);
+    return out;
   };
   const chars = (el) => {
     const text = el.textContent.trim();
@@ -131,16 +147,16 @@
 
   /* ───────── Estados iniciales de las revelaciones ───────── */
   const heroChars = $$('[data-chars]').flatMap(chars);
-  const splitHeads = $$('[data-split]').map((el) => ({ el, ws: words(el, '', true) }));
+  const splitHeads = $$('[data-split]').map((el) => ({ el, ws: scrubWords(el) }));
   const revealEls = $$('[data-reveal]');
   const heroIn = $$('[data-hero-in]');
-  const scrubBlocks = $$('[data-scrub-words]').map((el) => ({ el, ws: words(el, 'sw', false) }));
+  const scrubBlocks = $$('[data-scrub-words]').map((el) => ({ el, ws: scrubWords(el) }));
   const counters = $$('[data-count]');
 
   if (!reduce) {
-    gsap.set(heroChars, { yPercent: 118 });
+    gsap.set(heroChars, { opacity: 0 });
     heroIn.forEach((el) => gsap.set(el, { opacity: 0, y: 30 }));
-    splitHeads.forEach(({ ws }) => gsap.set(ws, { yPercent: 118 }));
+    splitHeads.forEach(({ ws }) => gsap.set(ws, { opacity: 0.14 }));
     gsap.set(revealEls, { opacity: 0, y: 36 });
     scrubBlocks.forEach(({ ws }) => gsap.set(ws, { opacity: 0.16 }));
     counters.forEach((el) => { el.textContent = '0' + (el.dataset.suffix || ''); });
@@ -155,7 +171,7 @@
   /* ───────── Revelaciones al hacer scroll ───────── */
   const initReveals = () => {
     if (reduce) return;
-    splitHeads.forEach(({ el, ws }) => ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(ws, { yPercent: 0, duration: 1.1, ease: 'power4.out', stagger: 0.055 }) }));
+    splitHeads.forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 52%', scrub: true } }));
     ScrollTrigger.batch(revealEls, { start: 'top 90%', once: true, onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.09, overwrite: 'auto' }) });
     scrubBlocks.forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: true } }));
     counters.forEach((el) => {
@@ -229,11 +245,11 @@
       const vw = (n) => (n * innerWidth) / 100, vh = (n) => (n * innerHeight) / 100;
       const S = {
         hero: { x: vw(23), y: vh(2), scale: 1, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
-        manifesto: { x: vw(27), y: vh(2), scale: 0.69, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
+        manifesto: { x: vw(27), y: vh(2), scale: 0.86, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
         away1: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 0, hi: 0, orbit: 0 },
-        about: { x: -vw(25), y: vh(2), scale: 0.97, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
+        about: { x: -vw(25), y: vh(2), scale: 1, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
         away2: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 180, hi: 0, orbit: 0 },
-        contact: { x: vw(25), y: vh(2), scale: 0.8, rz: 3, ry: -12, o: 1, flip: 360, hi: 1, orbit: 0 },
+        contact: { x: vw(25), y: vh(2), scale: 0.86, rz: 3, ry: -12, o: 1, flip: 360, hi: 1, orbit: 0 },
         away3: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 360, hi: 0, orbit: 0 },
       };
       const apply = (s) => ({ x: s.x, y: s.y, scale: s.scale, rotationZ: s.rz, opacity: s.o });
@@ -343,7 +359,25 @@
   /* ───────── Intro (loader → hero) ───────── */
   const intro = () => {
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-    if (heroChars.length) tl.to(heroChars, { yPercent: 0, duration: 1.3, stagger: 0.05 }, 0);
+    if (heroChars.length) {
+      // efecto de escritura: cada letra aparece una a una con un cursor que la acompaña
+      const caret = $('.hero__caret');
+      const title = caret ? caret.parentElement : null;
+      heroChars.forEach((c, i) => {
+        const at = 0.25 + i * 0.09;
+        tl.set(c, { opacity: 1 }, at);
+        if (caret) {
+          tl.call(() => {
+            const r = c.getBoundingClientRect(), t = title.getBoundingClientRect();
+            caret.style.opacity = '1';
+            caret.style.height = r.height * 0.74 + 'px';
+            caret.style.width = Math.max(3, r.height * 0.045) + 'px';
+            caret.style.transform = `translate(${r.right - t.left + 6}px, ${r.top - t.top + r.height * 0.14}px)`;
+          }, null, at);
+        }
+      });
+      if (caret) tl.to(caret, { opacity: 0, duration: 0.4 }, 0.25 + heroChars.length * 0.09 + 1);
+    }
     tl.to(heroIn, { opacity: 1, y: 0, duration: 1, stagger: 0.1 }, 0.3);
     if ($('.stage') && innerWidth >= 900) {
       tl.fromTo('.stage', { opacity: 0, y: 90, scale: 0.78 }, { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'expo.out' }, 0.1)
