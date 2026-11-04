@@ -362,14 +362,28 @@ html.js.is-loading .loader { display: grid; }
 .s4__chart i { flex: 1; height: var(--h); border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--mint), rgba(31, 255, 194, 0.25)); }
 
 /* modo estático (móvil / sin movimiento): las 4 pantallas una debajo de otra */
-.process--static .pscene { height: auto; display: block; place-items: start; perspective: none; overflow: clip; margin-top: 28px; }
-.process--static .pcar { height: auto; transform: none; transform-style: flat; display: grid; gap: 18px; }
-.process--static .sc3d { position: relative; inset: auto; width: 600px; height: 390px; transform: scale(var(--k)); transform-origin: 0 0; margin-bottom: calc(390px * (var(--k) - 1)); }
+/* Versión sin escena fija (móvil / movimiento reducido): cada paso es una pestaña que se despliega con su escena y su texto */
 .process--static .process__pin { min-height: 0; }
-.process--static .step { color: var(--txt); }
-.process--static .step__body { grid-template-rows: 1fr; }
-.process--static .step__n { color: var(--mint); }
-.process--static .step__body > p { padding-bottom: 18px; }
+.process--static .process__scene { display: none; }
+.process--static .process__grid { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .process--static .process__grid { grid-template-columns: minmax(0, 760px); justify-content: center; } }
+.process--static .steps { display: grid; gap: 12px; border-top: 0; }
+.process--static .step { position: relative; overflow: hidden; color: var(--txt); border: 1px solid var(--line); border-radius: 22px; background: rgba(255, 255, 255, 0.03); scroll-margin-top: 96px; transition: border-color 0.4s, background-color 0.4s, box-shadow 0.5s var(--ease); }
+.process--static .step.is-active { border-color: rgba(31, 255, 194, 0.5); background: linear-gradient(160deg, rgba(31, 255, 194, 0.10), rgba(255, 255, 255, 0.03) 62%); box-shadow: 0 24px 54px -30px rgba(31, 255, 194, 0.55); }
+.process--static .step__head { align-items: center; gap: 14px; padding: 16px 18px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.process--static .step__head::after { content: ""; flex: none; width: 9px; height: 9px; margin: -3px 4px 0 auto; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform 0.5s var(--ease), border-color 0.4s, margin 0.5s var(--ease); }
+.process--static .step.is-active .step__head::after { margin-top: 5px; border-color: var(--mint); transform: rotate(-135deg); }
+.process--static .step__n { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); color: var(--mint); font-size: 12px; transition: background-color 0.4s, color 0.4s, border-color 0.4s; }
+.process--static .step.is-active .step__n { background: var(--mint); border-color: var(--mint); color: var(--ink); }
+.process--static .step__t { flex: 1; min-width: 0; font-size: clamp(22px, 6.2vw, 30px); }
+.process--static .step__btn { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
+.process--static .step__btn:focus-visible { outline: 2px solid var(--mint); outline-offset: 6px; border-radius: 6px; }
+.process--static .step__body { grid-template-rows: 0fr; }
+.process--static .step.is-active .step__body { grid-template-rows: 1fr; }
+.step__inner { min-height: 0; overflow: hidden; padding: 0 18px; }
+.step__scene { position: relative; height: calc(390px * var(--k, 0.55)); margin: 2px 0 18px; border-radius: 14px; overflow: hidden; }
+.step__scene .sc3d { position: absolute; inset: 0 auto auto 0; width: 600px; height: 390px; transform: scale(var(--k, 0.55)); transform-origin: 0 0; }
+.step__inner > p { max-width: 60ch; padding-bottom: 22px; font-size: 16px; line-height: 1.55; color: rgba(245, 245, 242, 0.82); }
 
 /* ───────── Servicios (acordeón) ───────── */
 .services { padding: clamp(100px, 13vw, 190px) 0 clamp(90px, 12vw, 170px); position: relative; z-index: 1; }

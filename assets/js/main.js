@@ -375,10 +375,67 @@
     const clean = () => { ro.disconnect(); gsap.set(scenes, { clearProps: 'all' }); sec.classList.remove('process--static'); };
 
     if (!pinned) {
+      // Sin escena fija: cada paso es una pestaña (acordeón). Al abrirla muestra su pantalla y su texto.
       sec.classList.add('process--static');
+      ro.disconnect();
       gsap.set(scenes, { clearProps: 'all' });
-      steps.forEach((s) => s.classList.add('is-active'));
-      return () => { clean(); steps.forEach((s, k) => s.classList.toggle('is-active', k === 0)); };
+      const pcar = $('.pcar', sec), stepsEl = $('.steps', sec), undo = [];
+      const kfit = () => {
+        const holder = $('.step__scene', sec);
+        if (holder) stepsEl.style.setProperty('--k', Math.min(1, Math.max(0.4, holder.clientWidth / 600)).toFixed(3));
+      };
+      const open = (idx) => steps.forEach((o, k) => {
+        o.classList.toggle('is-active', k === idx);
+        const b = $('.step__btn', o);
+        if (b) b.setAttribute('aria-expanded', String(k === idx));
+      });
+      steps.forEach((s, i) => {
+        const body = $('.step__body', s), p = $('p', body), head = $('.step__head', s), t = $('.step__t', s), label = t.textContent.trim();
+        const inner = document.createElement('div');
+        inner.className = 'step__inner';
+        inner.id = 'paso-' + (i + 1);
+        const holder = document.createElement('div');
+        holder.className = 'step__scene';
+        holder.setAttribute('aria-hidden', 'true');
+        holder.appendChild(scenes[i]);
+        inner.append(holder, p);
+        body.appendChild(inner);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'step__btn';
+        btn.textContent = label;
+        btn.setAttribute('aria-controls', inner.id);
+        t.textContent = '';
+        t.appendChild(btn);
+        const onHead = () => {
+          const willOpen = !s.classList.contains('is-active');
+          open(willOpen ? i : -1);
+          setTimeout(() => ScrollTrigger.refresh(), 700);
+          if (willOpen) {
+            // cuando termina de cerrarse la pestaña anterior, si el título quedó fuera de vista se acerca
+            setTimeout(() => { const r = head.getBoundingClientRect(); if (r.top < 90 || r.top > innerHeight * 0.55) goTo(s, { offset: -96, duration: 0.9 }); }, 650);
+          }
+        };
+        head.addEventListener('click', onHead);
+        undo.push(() => {
+          head.removeEventListener('click', onHead);
+          t.textContent = label;
+          body.appendChild(p);
+          pcar.appendChild(scenes[i]);
+          inner.remove();
+        });
+      });
+      open(0);
+      kfit();
+      const rk = new ResizeObserver(kfit);
+      rk.observe(stepsEl);
+      return () => {
+        rk.disconnect();
+        undo.forEach((fn) => fn());
+        stepsEl.style.removeProperty('--k');
+        clean();
+        steps.forEach((s, k) => s.classList.toggle('is-active', k === 0));
+      };
     }
 
     // pos = paso "continuo" (0 a 3). La pantalla activa está al frente, las anteriores se van hacia atrás/arriba
