@@ -66,6 +66,7 @@
   const toggle = $('.pill__toggle');
   const menu = $('#menu');
   let menuOpen = false;
+  let menuAnim = null;
   const setMenu = (open) => {
     menuOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
@@ -73,8 +74,9 @@
     menu.setAttribute('aria-hidden', String(!open));
     root.classList.toggle('menu-open', open);
     if (lenis) { open ? lenis.stop() : lenis.start(); } else { document.body.style.overflow = open ? 'hidden' : ''; }
-    if (open && !reduce) {
-      gsap.fromTo('.menu__list li', { yPercent: 70, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.06, delay: 0.2 });
+    if (!reduce) {
+      if (open) menuAnim = gsap.fromTo('.menu__list li', { yPercent: 70, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.06, delay: 0.2, overwrite: true });
+      else if (menuAnim) menuAnim.timeScale(1.8).reverse(); // al cerrar, la misma animación al revés
     }
   };
   toggle.addEventListener('click', () => setMenu(!menuOpen));
@@ -170,26 +172,29 @@
     tr.style.animationDirection = (+tr.dataset.dir || 1) > 0 ? 'normal' : 'reverse';
   });
 
-  /* ───────── Tarjetas de principios: entrada dinámica ───────── */
+  /* ───────── Entradas reversibles ─────────
+     Cada entrada por scroll se crea en pausa: al bajar se reproduce y, al volver hacia arriba,
+     se reproduce al revés (misma animación, mismo ritmo) en vez de desaparecer de golpe. */
+  const revPlay = (els, gap) => els.forEach((el, i) => { if (el._d) el._d.kill(); el._d = gsap.delayedCall(i * gap, () => el._rv.play()); });
+  const revBack = (els) => els.forEach((el) => { if (el._d) el._d.kill(); el._rv.reverse(); });
+  const revealTween = (el, y, dur) => gsap.fromTo(el, { opacity: 0, y }, { opacity: 1, y: 0, duration: dur, ease: 'power3.out', paused: true });
+
+  // Tarjetas de principios: cada una es una línea de tiempo en pausa
   const prFrom = (i) => ({ opacity: 0, y: 150, scale: 0.84, rotationZ: [-7, 4, 7][i % 3] });
-  const prReset = (c, i) => {
-    if (c._tl) c._tl.kill();
+  const prBuild = (c, i) => {
     gsap.set(c, prFrom(i));
     gsap.set($('.pr__art', c), { opacity: 0, scale: 0.5, rotation: -12 });
     gsap.set($('.pr__t', c), { opacity: 0, y: 28 });
-    $$('.draw', c).forEach((p) => { p.style.strokeDashoffset = p.style.strokeDasharray; });
-    gsap.set($$('.bar', c), { scaleY: 0, transformBox: 'fill-box', transformOrigin: '50% 100%' });
-  };
-  const prIn = (c, delay) => {
-    if (c._tl) c._tl.kill();
-    const tl = gsap.timeline({ delay });
+    const barsInit = $$('.bar', c);
+    if (barsInit.length) gsap.set(barsInit, { scaleY: 0, transformBox: 'fill-box', transformOrigin: '50% 100%' });
+    const tl = gsap.timeline({ paused: true });
     tl.to(c, { opacity: 1, y: 0, scale: 1, rotationZ: 0, duration: 1.15, ease: 'back.out(1.5)' }, 0)
       .to($('.pr__art', c), { opacity: 1, scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(2.2)' }, 0.25)
       .to($('.pr__t', c), { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.45);
     const draws = $$('.draw', c), bars = $$('.bar', c);
     if (draws.length) tl.to(draws, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut', stagger: 0.18 }, 0.5);
     if (bars.length) tl.to(bars, { scaleY: 1, duration: 1, ease: 'back.out(1.5)', stagger: 0.12 }, 0.6);
-    c._tl = tl;
+    c._rv = tl;
   };
 
   /* ───────── Estados iniciales de las revelaciones ───────── */
@@ -204,11 +209,11 @@
     gsap.set(heroChars, { opacity: 0 });
     heroIn.forEach((el) => gsap.set(el, { opacity: 0, y: 30 }));
     splitHeads.forEach(({ ws }) => gsap.set(ws, { opacity: 0.14 }));
-    gsap.set(revealEls, { opacity: 0, y: 36 });
+    revealEls.forEach((el) => { el._rv = revealTween(el, 36, 0.95); });
     scrubBlocks.forEach(({ ws }) => gsap.set(ws, { opacity: 0.16 }));
     counters.forEach((el) => { el.textContent = '0' + (el.dataset.suffix || ''); });
     $$('.pr .draw').forEach((p) => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
-    $$('.pr').forEach((c, i) => prReset(c, i));
+    $$('.pr').forEach((c, i) => prBuild(c, i));
   }
 
   /* ───────── Barra de progreso ───────── */
@@ -219,19 +224,20 @@
   const initReveals = () => {
     if (reduce) return;
     splitHeads.forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 52%', scrub: true } }));
-    ScrollTrigger.batch(revealEls, { start: 'top 90%', once: true, onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.09, overwrite: 'auto' }) });
+    ScrollTrigger.batch(revealEls, { start: 'top 90%', onEnter: (b) => revPlay(b, 0.09), onLeaveBack: (b) => revBack(b) });
     // el texto del manifiesto lo anima initManifesto (fijo en escritorio, scroll normal en móvil)
     scrubBlocks.filter(({ el }) => !el.matches('.manifesto__text')).forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: true } }));
     counters.forEach((el) => {
       const end = +el.dataset.count, suf = el.dataset.suffix || '', o = { v: 0 };
-      ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(o, { v: end, duration: 2, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) + suf; } }) });
+      const count = gsap.to(o, { v: end, duration: 2, ease: 'power2.out', paused: true, onUpdate: () => { el.textContent = Math.round(o.v) + suf; } });
+      ScrollTrigger.create({ trigger: el, start: 'top 90%', onEnter: () => count.play(), onLeaveBack: () => count.reverse() });
     });
-    // las tarjetas entran en cascada y se reinician al volver hacia arriba, para que se repita la animación
+    // las tarjetas entran en cascada y, al volver hacia arriba, hacen la misma animación al revés
     const prs = $$('.pr');
     ScrollTrigger.batch(prs, {
       start: 'top 90%',
-      onEnter: (batch) => batch.forEach((c, i) => prIn(c, i * 0.14)),
-      onLeaveBack: (batch) => batch.forEach((c) => prReset(c, prs.indexOf(c))),
+      onEnter: (batch) => revPlay(batch, 0.14),
+      onLeaveBack: (batch) => revBack(batch),
     });
   };
 
@@ -451,8 +457,8 @@
   const initProjects = () => {
     const btns = $$('.filter'), items = $$('.gcard'), countEl = $('[data-visible-count]');
     if (!reduce) {
-      gsap.set(items, { opacity: 0, y: 50 });
-      ScrollTrigger.batch(items, { start: 'top 94%', once: true, onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: 'auto' }) });
+      items.forEach((el) => { el._rv = revealTween(el, 50, 0.9); });
+      ScrollTrigger.batch(items, { start: 'top 94%', onEnter: (b) => revPlay(b, 0.07), onLeaveBack: (b) => revBack(b) });
     }
     btns.forEach((b) => b.addEventListener('click', () => {
       btns.forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
@@ -464,7 +470,7 @@
       if (reduce) { swap(); return; }
       gsap.timeline()
         .to(hide.filter((i) => !i.hidden), { opacity: 0, scale: 0.94, duration: 0.25, ease: 'power2.in' })
-        .add(() => { swap(); gsap.fromTo(show, { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'power3.out', stagger: 0.045, overwrite: true }); });
+        .add(() => { swap(); gsap.fromTo(show, { opacity: 0, y: 34, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'power3.out', stagger: 0.045, overwrite: 'auto' }); });
     }));
   };
 
