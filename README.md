@@ -56,4 +56,4 @@ Para agregar un proyecto: añade la imagen WebP 1200×800 en `assets/img/project
 - **Dominio**: `canonical`, `og:url`, `sitemap.xml` y `robots.txt` apuntan a `https://diegotdesigner.com/`.
 - **Analítica**: no se incluyó (el sitio actual no mostraba etiquetas visibles). Agregar GA4/Tag Manager si se necesita.
 - Las fuentes se cargan desde Google Fonts; si se quiere cero dependencias externas, hay que autoalojarlas.
-- **Logo de CapCut**: no está en los sets públicos de iconos, así que `assets/img/skills/capcut.svg` es una aproximación propia. Reemplázalo por el SVG oficial si lo tienes. Los demás logos son los oficiales de cada plataforma (repositorio público gilbarbara/logos).
+- **Logo de CapCut**: `assets/img/skills/capcut.svg` es el logo oficial (vectorizado a partir del PNG que envió Diego el 2026-11-04). Los demás logos son los oficiales de cada plataforma (repositorio público gilbarbara/logos).
