@@ -5,6 +5,31 @@
      tarjetas de proyectos apiladas, acordeón de servicios, marquees.
    - Proyectos: filtros animados + rejilla con tilt.
    ========================================================================== */
+/* Botón flotante de WhatsApp: aparece al pasar el banner principal.
+   Va aparte del resto para que funcione aunque GSAP no cargue. */
+(() => {
+  const wa = document.querySelector('.wa');
+  if (!wa) return;
+  const hero = document.querySelector('.hero');
+  let limit = 360;
+  let on = false;
+  const measure = () => {
+    // Home: cuando el banner ya pasó el 60 % de la pantalla. Otras páginas: tras un primer scroll.
+    limit = hero ? Math.max(0, hero.getBoundingClientRect().bottom + scrollY - innerHeight * 0.6) : 360;
+  };
+  const update = () => {
+    const next = scrollY > limit;
+    if (next === on) return;
+    on = next;
+    wa.classList.toggle('is-on', on);
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', () => { measure(); update(); });
+  addEventListener('load', () => { measure(); update(); });
+  measure();
+  update();
+})();
+
 (() => {
   'use strict';
 
@@ -228,7 +253,7 @@
   };
 
   const initJourney = () => {
-    const card = $('.scard'), tilt = $('.scard__tilt'), flip = $('.scard__flip'), hi = $('.scard__hi'), chips = $$('.scard__chip'), plate = $('.scard__plate');
+    const card = $('.scard'), tilt = $('.scard__tilt'), flip = $('.scard__flip'), hi = $('.scard__hi'), chips = $$('.scard__face--front .scard__chip'), chipsB = $$('.scard__face--back .scard__chip'), plates = card ? $$('.scard__plate', card) : [];
     if (!card) return () => {};
 
     // el tilt sigue al cursor (afecta a todas las posiciones de la tarjeta)
@@ -238,7 +263,7 @@
       const move = (e) => {
         const nx = e.clientX / innerWidth - 0.5, ny = e.clientY / innerHeight - 0.5;
         qry(nx * 26); qrx(-ny * 20);
-        plate.style.setProperty('--sx', (50 + nx * 80) + '%'); plate.style.setProperty('--sy', (20 + ny * 80) + '%');
+        plates.forEach((p) => { p.style.setProperty('--sx', (50 + nx * 80) + '%'); p.style.setProperty('--sy', (20 + ny * 80) + '%'); });
       };
       addEventListener('pointermove', move, { passive: true });
       offMove = () => removeEventListener('pointermove', move);
@@ -253,7 +278,7 @@
         hero: { x: vw(23), y: vh(2), scale: 1, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
         manifesto: { x: vw(27), y: vh(2), scale: 0.86, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
         away1: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 0, hi: 0, orbit: 0 },
-        about: { x: -vw(25), y: vh(2), scale: 1, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0 },
+        about: { x: -vw(21), y: vh(2), scale: 1, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0, orbitB: 1 },
         away2: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 180, hi: 0, orbit: 0 },
         contact: { x: vw(25), y: vh(2), scale: 0.86, rz: 3, ry: -12, o: 1, flip: 360, hi: 1, orbit: 0 },
         away3: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 360, hi: 0, orbit: 0 },
@@ -264,12 +289,14 @@
         tl.fromTo(flip, { rotationY: from.flip + from.ry }, { rotationY: to.flip + to.ry, duration: dur, immediateRender: false }, at);
         tl.fromTo(hi, { opacity: from.hi, scale: 0.4 + 0.6 * from.hi }, { opacity: to.hi, scale: 0.4 + 0.6 * to.hi, duration: dur, immediateRender: false }, at);
         tl.fromTo(chips, { opacity: from.orbit, scale: 0.5 + 0.5 * from.orbit }, { opacity: to.orbit, scale: 0.5 + 0.5 * to.orbit, duration: dur, immediateRender: false }, at);
+        const ob0 = from.orbitB || 0, ob1 = to.orbitB || 0; // etiquetas de la cara trasera ("sobre mí")
+        tl.fromTo(chipsB, { opacity: ob0, scale: 0.5 + 0.5 * ob0 }, { opacity: ob1, scale: 0.5 + 0.5 * ob1, duration: dur, immediateRender: false }, at);
       };
       tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
       // estado inicial del hero (un timeline pausado en t=0 no renderiza por sí solo)
       const h0 = S.hero;
       gsap.set(card, apply(h0)); gsap.set(flip, { rotationY: h0.flip + h0.ry });
-      gsap.set(hi, { opacity: h0.hi, scale: 0.4 + 0.6 * h0.hi }); gsap.set(chips, { opacity: h0.orbit, scale: 0.5 + 0.5 * h0.orbit });
+      gsap.set(hi, { opacity: h0.hi, scale: 0.4 + 0.6 * h0.hi }); gsap.set(chips, { opacity: h0.orbit, scale: 0.5 + 0.5 * h0.orbit }); gsap.set(chipsB, { opacity: 0, scale: 0.5 });
       tl.set(card, apply(S.hero), 0).set(flip, { rotationY: h0.flip + h0.ry }, 0);
       const win = (k) => { const t = stop(k); return [t - vh(92), vh(58)]; };
       const seq = [['manifesto', 'hero', 'manifesto'], ['away1', 'manifesto', 'away1'], ['about', 'away1', 'about'], ['away2', 'about', 'away2'], ['contact', 'away2', 'contact']];
@@ -283,7 +310,7 @@
     const st = ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => tl && tl.time(self.scroll(), true) });
     ScrollTrigger.addEventListener('refresh', build);
     build();
-    return () => { ScrollTrigger.removeEventListener('refresh', build); tl && tl.kill(); st.kill(); offMove(); gsap.set([card, flip, hi, chips, tilt], { clearProps: 'all' }); };
+    return () => { ScrollTrigger.removeEventListener('refresh', build); tl && tl.kill(); st.kill(); offMove(); gsap.set([card, flip, hi, chips, chipsB, tilt], { clearProps: 'all' }); };
   };
 
   /* ───────── Proceso: cuatro pantallas que pasan al frente (una por paso) ───────── */
@@ -425,7 +452,7 @@
     tl.to(heroIn, { opacity: 1, y: 0, duration: 1, stagger: 0.1 }, 0.3);
     if ($('.stage') && matchMedia('(min-width: 900px)').matches) {
       tl.fromTo('.stage', { opacity: 0, y: 90, scale: 0.78 }, { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'expo.out' }, 0.1)
-        .fromTo('.scard__chip', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(2)', stagger: 0.1, clearProps: 'scale,opacity' }, 0.9)
+        .fromTo('.scard__face--front .scard__chip', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(2)', stagger: 0.1, clearProps: 'scale,opacity' }, 0.9)
         .fromTo('.scard__hi', { scale: 0 }, { scale: 1, duration: 0.8, ease: 'back.out(2.4)', clearProps: 'scale' }, 1.3);
     }
     return tl;
