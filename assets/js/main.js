@@ -170,6 +170,28 @@
     tr.style.animationDirection = (+tr.dataset.dir || 1) > 0 ? 'normal' : 'reverse';
   });
 
+  /* ───────── Tarjetas de principios: entrada dinámica ───────── */
+  const prFrom = (i) => ({ opacity: 0, y: 150, scale: 0.84, rotationZ: [-7, 4, 7][i % 3] });
+  const prReset = (c, i) => {
+    if (c._tl) c._tl.kill();
+    gsap.set(c, prFrom(i));
+    gsap.set($('.pr__art', c), { opacity: 0, scale: 0.5, rotation: -12 });
+    gsap.set($('.pr__t', c), { opacity: 0, y: 28 });
+    $$('.draw', c).forEach((p) => { p.style.strokeDashoffset = p.style.strokeDasharray; });
+    gsap.set($$('.bar', c), { scaleY: 0, transformBox: 'fill-box', transformOrigin: '50% 100%' });
+  };
+  const prIn = (c, delay) => {
+    if (c._tl) c._tl.kill();
+    const tl = gsap.timeline({ delay });
+    tl.to(c, { opacity: 1, y: 0, scale: 1, rotationZ: 0, duration: 1.15, ease: 'back.out(1.5)' }, 0)
+      .to($('.pr__art', c), { opacity: 1, scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(2.2)' }, 0.25)
+      .to($('.pr__t', c), { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.45);
+    const draws = $$('.draw', c), bars = $$('.bar', c);
+    if (draws.length) tl.to(draws, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut', stagger: 0.18 }, 0.5);
+    if (bars.length) tl.to(bars, { scaleY: 1, duration: 1, ease: 'back.out(1.5)', stagger: 0.12 }, 0.6);
+    c._tl = tl;
+  };
+
   /* ───────── Estados iniciales de las revelaciones ───────── */
   const heroChars = $$('[data-chars]').flatMap(chars);
   const splitHeads = $$('[data-split]').map((el) => ({ el, ws: scrubWords(el) }));
@@ -186,7 +208,7 @@
     scrubBlocks.forEach(({ ws }) => gsap.set(ws, { opacity: 0.16 }));
     counters.forEach((el) => { el.textContent = '0' + (el.dataset.suffix || ''); });
     $$('.pr .draw').forEach((p) => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
-    gsap.set($$('.pr .bar'), { scaleY: 0, transformBox: 'fill-box', transformOrigin: '50% 100%' });
+    $$('.pr').forEach((c, i) => prReset(c, i));
   }
 
   /* ───────── Barra de progreso ───────── */
@@ -198,19 +220,38 @@
     if (reduce) return;
     splitHeads.forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 52%', scrub: true } }));
     ScrollTrigger.batch(revealEls, { start: 'top 90%', once: true, onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.09, overwrite: 'auto' }) });
-    scrubBlocks.forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: true } }));
+    // el texto del manifiesto lo anima initManifesto (fijo en escritorio, scroll normal en móvil)
+    scrubBlocks.filter(({ el }) => !el.matches('.manifesto__text')).forEach(({ el, ws }) => gsap.to(ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: true } }));
     counters.forEach((el) => {
       const end = +el.dataset.count, suf = el.dataset.suffix || '', o = { v: 0 };
       ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(o, { v: end, duration: 2, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) + suf; } }) });
     });
-    $$('.pr').forEach((card) => ScrollTrigger.create({
-      trigger: card, start: 'top 85%', once: true,
-      onEnter: () => {
-        const draws = $$('.draw', card), bars = $$('.bar', card);
-        if (draws.length) gsap.to(draws, { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut', stagger: 0.18 });
-        if (bars.length) gsap.to(bars, { scaleY: 1, duration: 1, ease: 'back.out(1.5)', stagger: 0.12, delay: 0.2 });
-      },
-    }));
+    // las tarjetas entran en cascada y se reinician al volver hacia arriba, para que se repita la animación
+    const prs = $$('.pr');
+    ScrollTrigger.batch(prs, {
+      start: 'top 90%',
+      onEnter: (batch) => batch.forEach((c, i) => prIn(c, i * 0.14)),
+      onLeaveBack: (batch) => batch.forEach((c) => prReset(c, prs.indexOf(c))),
+    });
+  };
+
+  /* ───────── Manifiesto: queda fijo, se lee y la sección siguiente sube y lo tapa ───────── */
+  const initManifesto = (pinned) => {
+    const sec = $('.manifesto'), next = $('.principles-sec'), lead = $('.manifesto__lead'), txt = $('.manifesto__text');
+    if (!sec || !next || !lead) return () => {};
+    const block = scrubBlocks.find((b) => b.el === txt);
+    if (!pinned) {
+      // móvil / sin escritorio: las palabras se encienden con el scroll normal
+      if (block && !reduce) gsap.to(block.ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: txt, start: 'top 82%', end: 'bottom 48%', scrub: true } });
+      return () => {};
+    }
+    root.classList.add('manifesto-pinned'); // antes de medir: la sección pasa a ocupar la pantalla
+    ScrollTrigger.create({ trigger: sec, start: 'top top', endTrigger: next, end: 'top top', pin: true, pinSpacing: false, anticipatePin: 1 });
+    // lectura: las palabras se encienden mientras el bloque está fijo (y queda un respiro antes de que suba lo siguiente)
+    if (block) gsap.to(block.ws, { opacity: 1, ease: 'none', stagger: 0.12, scrollTrigger: { trigger: sec, start: 'top top', end: () => '+=' + Math.round(innerHeight * 0.7), scrub: true } });
+    // al subir la sección siguiente, el manifiesto se aleja y se apaga debajo
+    gsap.fromTo(lead, { y: 0, scale: 1, opacity: 1 }, { y: -40, scale: 0.94, opacity: 0.25, ease: 'none', scrollTrigger: { trigger: next, start: 'top 100%', end: 'top 12%', scrub: true } });
+    return () => { root.classList.remove('manifesto-pinned'); gsap.set(lead, { clearProps: 'all' }); };
   };
 
   /* ───────── Servicios: acordeón ───────── */
@@ -276,7 +317,7 @@
       const vw = (n) => (n * innerWidth) / 100, vh = (n) => (n * innerHeight) / 100;
       const S = {
         hero: { x: vw(23), y: vh(2), scale: 1, rz: 0, ry: 0, o: 1, flip: 0, hi: 1, orbit: 1 },
-        manifesto: { x: vw(27), y: vh(2), scale: 0.86, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
+        manifesto: { x: vw(22.5), y: vh(2), scale: 0.86, rz: 3, ry: -14, o: 1, flip: 0, hi: 0, orbit: 0 },
         away1: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 0, hi: 0, orbit: 0 },
         about: { x: -vw(21), y: vh(2), scale: 1, rz: -3, ry: 12, o: 1, flip: 180, hi: 0, orbit: 0, orbitB: 1 },
         away2: { x: 0, y: -vh(46), scale: 0.07, rz: 0, ry: 0, o: 0, flip: 180, hi: 0, orbit: 0 },
@@ -482,12 +523,17 @@
   /* ───────── Arranque ───────── */
   const mm = gsap.matchMedia();
   mm.add('(min-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
+    const offManifesto = page === 'home' ? initManifesto(true) : () => {}; // primero: cambia el diseño de la página antes de medir lo demás
     const offProcess = page === 'home' ? initProcess(true) : () => {};
     const offJourney = page === 'home' ? initJourney() : () => {};
     const offStack = page === 'home' ? initStack() : () => {};
-    return () => { offStack(); offJourney(); offProcess(); };
+    return () => { offStack(); offJourney(); offProcess(); offManifesto(); };
   });
-  mm.add('(max-width: 899px), (prefers-reduced-motion: reduce)', () => (page === 'home' ? initProcess(false) : undefined));
+  mm.add('(max-width: 899px), (prefers-reduced-motion: reduce)', () => {
+    if (page !== 'home') return undefined;
+    initManifesto(false);
+    return initProcess(false);
+  });
   mm.add('(min-width: 900px) and (prefers-reduced-motion: reduce)', () => {
     if (page !== 'home') return;
     const st = ScrollTrigger.create({ trigger: '.hero', start: 'bottom 60%', onEnter: () => gsap.to('.stage', { opacity: 0, duration: 0.3 }), onLeaveBack: () => gsap.to('.stage', { opacity: 1, duration: 0.3 }) });
