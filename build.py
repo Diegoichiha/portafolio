@@ -85,7 +85,7 @@ def grid_cards(root):
 
 
 JSONLD = """<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Diego Torres — Diseñador UX/UI y desarrollador web","url":"%s","image":"%sassets/img/og.jpg","description":"Diseño y desarrollo experiencias digitales que convierten visitantes en clientes: UI/UX, desarrollo web, identidad de marca y publicidad digital.","founder":{"@type":"Person","name":"Diego Torres","jobTitle":"Diseñador UX/UI y desarrollador web","sameAs":["%s"]},"areaServed":"CO","knowsAbout":["UI/UX","Diseño web","WordPress","Shopify","Branding","Google Ads","Meta Ads"]}
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Diego Torres — Diseñador UX/UI y Especialista en Marketing digital","url":"%s","image":"%sassets/img/og.jpg","description":"Diseño y desarrollo experiencias digitales que convierten visitantes en clientes: UI/UX, desarrollo web, identidad de marca y publicidad digital.","founder":{"@type":"Person","name":"Diego Torres","jobTitle":"Diseñador UX/UI y Especialista en Marketing digital","sameAs":["%s"]},"areaServed":"CO","knowsAbout":["UI/UX","Diseño web","WordPress","Shopify","Branding","Google Ads","Meta Ads"]}
 </script>""" % (SITE, SITE, LINKEDIN)
 
 PAGES = [
@@ -95,7 +95,7 @@ PAGES = [
         "root": "",
         "path": "",
         "page": "home",
-        "title": "Diego Torres | Diseñador UX/UI y desarrollador web",
+        "title": "Diego Torres | Diseñador UX/UI y Especialista en Marketing digital",
         "description": "Diseño y desarrollo experiencias digitales que convierten visitantes en clientes. UI/UX, desarrollo web (WordPress, Shopify), identidad de marca y publicidad digital.",
         "jsonld": JSONLD,
         "priority": "1.0",
@@ -106,7 +106,7 @@ PAGES = [
         "root": "../",
         "path": "proyectos/",
         "page": "projects",
-        "title": "Proyectos | Diego Torres, diseñador UX/UI y desarrollador web",
+        "title": "Proyectos | Diego Torres, diseñador UX/UI y marketing digital",
         "description": "Sitios web, tiendas virtuales y prototipos en Figma diseñados y desarrollados por Diego Torres. Explora el portafolio completo.",
         "jsonld": "",
         "priority": "0.8",
