@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Imagen para compartir (Open Graph) · 1200 × 630</title>
+<!--
+  Fuente de la imagen assets/img/og-diego-torres.jpg.
+  Usa Figtree, la misma tipografía del sitio. Para regenerarla:
+    1. Abre este archivo en Edge/Chrome sin cabecera (ver README, sección "Imagen para compartir").
+    2. Convierte el PNG resultante a JPG (calidad ~88).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #0b0b0c; }
+  body { font-family: 'Figtree', system-ui, sans-serif; color: #f5f5f2; -webkit-font-smoothing: antialiased; }
+
+  .og {
+    position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background:
+      radial-gradient(52% 88% at 84% 44%, rgba(31, 255, 194, 0.30), transparent 66%),
+      radial-gradient(46% 60% at 0% 100%, rgba(31, 255, 194, 0.10), transparent 70%),
+      linear-gradient(180deg, #0e1013 0%, #0a0a0c 100%);
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(70% 85% at 72% 42%, #000, transparent 82%);
+            mask-image: radial-gradient(70% 85% at 72% 42%, #000, transparent 82%);
+  }
+
+  .copy { position: absolute; left: 72px; top: 62px; width: 660px; }
+  .chip { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .chip i { width: 34px; height: 3px; border-radius: 2px; background: #1fffc2; }
+  h1 { margin-top: 30px; font-weight: 800; font-size: 160px; line-height: 0.9; letter-spacing: -0.045em; }
+  h1 span { display: block; }
+  h1 .m { color: #1fffc2; }
+  .role { margin-top: 30px; font-weight: 700; font-size: 36px; line-height: 1.2; letter-spacing: -0.012em; max-width: 600px; }
+  .role em { font-style: normal; color: #1fffc2; }
+
+  .brand { position: absolute; left: 72px; bottom: 40px; display: flex; align-items: center; gap: 16px; }
+  .brand img { height: 36px; width: auto; }
+  .brand span { font: 500 22px 'JetBrains Mono', monospace; color: #9b9ba3; letter-spacing: 0.02em; }
+
+  .plate {
+    position: absolute; left: 760px; top: 156px; width: 372px; height: 474px;
+    border-radius: 44px 44px 0 0; overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 0%, #7bffe0 0%, #1fffc2 34%, #0fae88 70%, #0a5a49 100%);
+    box-shadow: 0 50px 90px -30px rgba(31, 255, 194, 0.45);
+  }
+  .plate::before, .plate::after { content: ""; position: absolute; left: 50%; border: 2px solid rgba(11, 11, 12, 0.14); border-radius: 50%; aspect-ratio: 1; transform: translateX(-50%); }
+  .plate::before { width: 120%; top: 4%; }
+  .plate::after { width: 82%; top: 20%; border-color: rgba(11, 11, 12, 0.09); }
+  .cut { position: absolute; left: 760px; width: 372px; bottom: 0; display: block; filter: drop-shadow(0 26px 26px rgba(0, 0, 0, 0.35)); }
+
+  .tag { position: absolute; padding: 11px 22px 11px 18px; border-radius: 999px; background: rgba(14, 14, 16, 0.82); border: 1.5px solid rgba(255, 255, 255, 0.22); font-weight: 700; font-size: 22px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 10px; }
+  .tag::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #1fffc2; }
+  .tag--a { left: 706px; top: 210px; }
+  .tag--b { left: 1004px; top: 312px; }
+  .tag--c { left: 722px; top: 508px; }
+</style>
+</head>
+<body>
+  <div class="og">
+    <div class="grid"></div>
+
+    <div class="copy">
+      <div class="chip"><i></i> UX/UI · Marketing digital</div>
+      <h1><span>Diego</span><span class="m">Torres</span></h1>
+      <p class="role">Diseñador UX/UI y <em>Especialista en Marketing digital</em></p>
+    </div>
+
+    <div class="plate"></div>
+    <img class="cut" src="../../assets/img/diego-front.webp" alt="" width="372" height="461">
+    <span class="tag tag--a">UI/UX</span>
+    <span class="tag tag--b">Marketing</span>
+    <span class="tag tag--c">Branding</span>
+
+    <div class="brand">
+      <img src="../../assets/img/mark.svg" alt="">
+      <span>diegotdesigner.com</span>
+    </div>
+  </div>
+</body>
+</html>

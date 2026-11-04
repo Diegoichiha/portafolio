@@ -33,7 +33,8 @@ src/partials/            head, header (píldora + menú) y footer
 src/data/projects.json   los 17 proyectos (título, categoría, año, URL, imagen)
 assets/css/style.css     estilos
 assets/js/main.js        animaciones (loader, tarjeta 3D, proceso, filtros…)
-assets/img/              retratos, logo, og.jpg y miniaturas WebP de proyectos
+assets/img/              retratos, logo, og-diego-torres.jpg (imagen al compartir) y miniaturas WebP de proyectos
+tools/og/og.html         fuente de la imagen para compartir (1200×630, tipografía Figtree)
 ```
 
 **No edites a mano los `.html` generados**: cambia `src/` y ejecuta
@@ -44,6 +45,13 @@ python build.py
 
 Vista previa local: `npx http-server . -p 5200 -c-1` y abre <http://localhost:5200/>.
 Para agregar un proyecto: añade la imagen WebP 1200×800 en `assets/img/projects/`, agrega su entrada en `src/data/projects.json` (con `"featured": true` y `desc`/`tags`/`cta` si va en la home) y vuelve a ejecutar `build.py`.
+
+## SEO y vista previa al compartir
+
+- `title`, `description`, Open Graph, Twitter Card, `canonical` y JSON-LD (WebSite, Person, ProfessionalService; en Proyectos, CollectionPage + BreadcrumbList) se generan en `build.py` y `src/partials/head.html`.
+- Títulos ≤ 60 caracteres y descripciones ≤ 160 para que Google y las redes no los recorten.
+- **Imagen al compartir**: `assets/img/og-diego-torres.jpg` (1200×630, ~100 KB). Se diseña en `tools/og/og.html` con Figtree, la misma tipografía del sitio. Para regenerarla: abre ese HTML en Edge/Chrome sin cabecera con ventana de 1200×630 (`msedge --headless=new --window-size=1200,630 --virtual-time-budget=12000 --screenshot=og.png file:///…/tools/og/og.html`) y guarda el PNG como JPG (calidad ~88).
+- Si cambias la imagen o los textos, **cambia también el nombre del archivo** (WhatsApp, Facebook y LinkedIn guardan en caché la vista previa por URL) y vuelve a pedir la lectura: Facebook *Sharing Debugger* («Volver a extraer»), LinkedIn *Post Inspector* y, para Google, «Solicitar indexación» en Search Console.
 
 ## Pendientes / por validar con Diego
 

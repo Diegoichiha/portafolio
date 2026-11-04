@@ -6,6 +6,7 @@ cambia src/pages, src/partials o src/data/projects.json y vuelve a ejecutar:
 
     python build.py
 """
+import datetime
 import hashlib
 import html
 import json
@@ -16,6 +17,9 @@ SRC = ROOT / "src"
 SITE = "https://diegotdesigner.com/"
 WHATSAPP = "https://wa.link/ydvb9j"
 LINKEDIN = "https://www.linkedin.com/in/diegotorres-mktdigital/"
+OG_IMAGE = SITE + "assets/img/og-diego-torres.jpg"  # 1200 x 630, hecha con Figtree (tools/og/og.html)
+OG_ALT = "Diego Torres, diseñador UX/UI y especialista en marketing digital"
+ROLE = "Diseñador UX/UI y Especialista en Marketing digital"
 
 projects = json.loads((SRC / "data" / "projects.json").read_text(encoding="utf-8"))
 
@@ -84,9 +88,61 @@ def grid_cards(root):
     return "\n".join(out)
 
 
-JSONLD = """<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Diego Torres — Diseñador UX/UI y Especialista en Marketing digital","url":"%s","image":"%sassets/img/og.jpg","description":"Diseño y desarrollo experiencias digitales que convierten visitantes en clientes: UI/UX, desarrollo web, identidad de marca y publicidad digital.","founder":{"@type":"Person","name":"Diego Torres","jobTitle":"Diseñador UX/UI y Especialista en Marketing digital","sameAs":["%s"]},"areaServed":"CO","knowsAbout":["UI/UX","Diseño web","WordPress","Shopify","Branding","Google Ads","Meta Ads"]}
-</script>""" % (SITE, SITE, LINKEDIN)
+def jsonld(obj):
+    return '<script type="application/ld+json">\n' + json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n</script>"
+
+
+PERSON = {
+    "@type": "Person",
+    "@id": SITE + "#diego",
+    "name": "Diego Torres",
+    "url": SITE,
+    "image": OG_IMAGE,
+    "jobTitle": ROLE,
+    "sameAs": [LINKEDIN],
+    "knowsAbout": ["UI/UX", "Diseño web", "Branding", "Marketing digital", "Google Ads", "Meta Ads", "WordPress", "Shopify"],
+}
+WEBSITE = {
+    "@type": "WebSite",
+    "@id": SITE + "#website",
+    "url": SITE,
+    "name": "Diego Torres — Diseñador UX/UI",
+    "inLanguage": "es-CO",
+    "publisher": {"@id": SITE + "#diego"},
+}
+SERVICE = {
+    "@type": "ProfessionalService",
+    "@id": SITE + "#servicio",
+    "name": "Diego Torres — " + ROLE,
+    "url": SITE,
+    "image": OG_IMAGE,
+    "description": "Diseño de experiencias digitales que convierten visitantes en clientes: UI/UX, sitios web, identidad de marca y publicidad digital.",
+    "founder": {"@id": SITE + "#diego"},
+    "areaServed": "CO",
+    "sameAs": [LINKEDIN],
+}
+JSONLD = jsonld({"@context": "https://schema.org", "@graph": [WEBSITE, PERSON, SERVICE]})
+JSONLD_PROJECTS = jsonld({
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "CollectionPage",
+            "@id": SITE + "proyectos/#pagina",
+            "url": SITE + "proyectos/",
+            "name": "Proyectos de Diego Torres",
+            "inLanguage": "es-CO",
+            "isPartOf": {"@id": SITE + "#website"},
+            "about": {"@id": SITE + "#diego"},
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Inicio", "item": SITE},
+                {"@type": "ListItem", "position": 2, "name": "Proyectos", "item": SITE + "proyectos/"},
+            ],
+        },
+    ],
+})
 
 PAGES = [
     {
@@ -95,8 +151,8 @@ PAGES = [
         "root": "",
         "path": "",
         "page": "home",
-        "title": "Diego Torres | Diseñador UX/UI y Especialista en Marketing digital",
-        "description": "Diseño y desarrollo experiencias digitales que convierten visitantes en clientes. UI/UX, desarrollo web (WordPress, Shopify), identidad de marca y publicidad digital.",
+        "title": "Diego Torres | Diseñador UX/UI y Marketing digital",
+        "description": "Diseñador UX/UI y especialista en marketing digital. Creo sitios web, tiendas online y marcas que convierten visitantes en clientes.",
         "jsonld": JSONLD,
         "priority": "1.0",
     },
@@ -106,9 +162,9 @@ PAGES = [
         "root": "../",
         "path": "proyectos/",
         "page": "projects",
-        "title": "Proyectos | Diego Torres, diseñador UX/UI y marketing digital",
-        "description": "Sitios web, tiendas virtuales y prototipos en Figma diseñados y desarrollados por Diego Torres. Explora el portafolio completo.",
-        "jsonld": "",
+        "title": "Proyectos de diseño web y UX/UI | Diego Torres",
+        "description": "Sitios web, tiendas virtuales y prototipos en Figma diseñados por Diego Torres. Explora el portafolio completo.",
+        "jsonld": JSONLD_PROJECTS,
         "priority": "0.8",
     },
 ]
@@ -124,7 +180,8 @@ def build():
             "title": esc(pg["title"]),
             "description": esc(pg["description"]),
             "canonical": canonical,
-            "og_image": SITE + "assets/img/og.jpg",
+            "og_image": OG_IMAGE,
+            "og_alt": esc(OG_ALT),
             "root": root,
             "v": v,
             "page": pg["page"],
@@ -148,8 +205,9 @@ def build():
         dest.write_text(body, encoding="utf-8")
         print("ok", pg["out"], f"({len(body) // 1024} KB)")
 
+    today = datetime.date.today().isoformat()
     urls = "".join(
-        f"  <url><loc>{SITE}{pg['path']}</loc><priority>{pg['priority']}</priority></url>\n" for pg in PAGES
+        f"  <url><loc>{SITE}{pg['path']}</loc><lastmod>{today}</lastmod><priority>{pg['priority']}</priority></url>\n" for pg in PAGES
     )
     (ROOT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
