@@ -431,7 +431,7 @@ html.js.is-loading .loader { display: grid; }
 .marquee__track span:hover { background: var(--mint); color: var(--ink); border-color: var(--mint); }
 .marquee--alt .marquee__track span { color: var(--mint); border-color: rgba(31, 255, 194, 0.3); }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); padding-top: clamp(60px, 9vw, 130px); }
-.stat { border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 8px; align-content: start; }
+.stat { border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 8px; align-content: start; justify-items: center; text-align: center; }
 .stat__n { font: 800 clamp(56px, 8vw, 132px) / 0.95 var(--f-body); letter-spacing: -0.045em; color: var(--mint); font-variant-numeric: tabular-nums; }
 .stat__l { font-weight: 800; font-size: clamp(18px, 1.6vw, 24px); }
 .stat p { color: var(--muted); max-width: 30ch; font-size: 15px; }
