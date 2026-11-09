@@ -437,9 +437,10 @@ html.js.is-loading .loader { display: grid; }
 .arc__item::after { content: attr(data-name); position: absolute; top: calc(100% + 10px); left: 50%; transform: translate(-50%, -4px); padding: 5px 12px; border-radius: 999px; background: rgba(8, 8, 10, 0.92); border: 1px solid var(--line); color: var(--txt); font: 600 12px var(--f-body); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s var(--ease); }
 .arc__item:hover::after { opacity: 1; transform: translate(-50%, 0); }
 .arc__core { position: absolute; left: 50%; top: 72%; width: 0; height: 0; }
-.arc__halo { position: absolute; left: 50%; top: 50%; width: clamp(280px, 40vw, 600px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(31, 255, 194, 0.30) 0%, rgba(31, 255, 194, 0.11) 42%, transparent 68%); animation: halo 5s ease-in-out infinite; }
-@keyframes halo { 50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.8; } }
-.arc__logo { max-width: none; position: absolute; left: 50%; top: 50%; width: clamp(200px, 27vw, 390px); height: auto; transform: translate(-50%, -50%); filter: drop-shadow(0 8px 36px rgba(31, 255, 194, 0.22)); }
+/* luz verde difusa: una elipse enorme con caída muy suave (sin borde visible) que se reparte por todo el ancho y alto del espacio negro */
+.arc::before { content: ""; position: absolute; left: 50%; top: calc(72% - 580px); width: min(100vw, 2400px); height: 1160px; transform: translateX(-50%); pointer-events: none; background: radial-gradient(closest-side at 50% 50%, rgba(31, 255, 194, 0.19) 0%, rgba(31, 255, 194, 0.162) 12%, rgba(31, 255, 194, 0.13) 25%, rgba(31, 255, 194, 0.096) 38%, rgba(31, 255, 194, 0.066) 50%, rgba(31, 255, 194, 0.04) 62%, rgba(31, 255, 194, 0.02) 74%, rgba(31, 255, 194, 0.007) 88%, transparent 100%); animation: halo 7s ease-in-out infinite; }
+@keyframes halo { 50% { opacity: 0.72; } }
+.arc__logo { max-width: none; position: absolute; left: 50%; top: 50%; width: clamp(200px, 27vw, 390px); height: auto; transform: translate(-50%, -50%); filter: drop-shadow(0 8px 60px rgba(31, 255, 194, 0.12)); }
 .arc__caption { position: absolute; left: 50%; top: calc(72% + clamp(58px, 6.2vw, 90px)); transform: translateX(-50%); width: min(520px, 90%); text-align: center; display: grid; gap: 6px; }
 .arc__caption b { font: 800 clamp(18px, 2vw, 30px) / 1.1 var(--f-body); letter-spacing: -0.03em; }
 .arc__caption span { color: var(--muted); font-size: clamp(13px, 1.05vw, 15px); }
@@ -580,6 +581,7 @@ html.js.is-loading .loader { display: grid; }
   .about__copy { grid-column: 1; }
   .arc { aspect-ratio: 1 / 1.02; }
   .arc__core { top: 68%; }
+  .arc::before { top: calc(68% - 400px); width: 170vw; height: 800px; }
   .arc__caption { top: calc(68% + 56px); }
   .arc__logo { width: clamp(180px, 52vw, 260px); }
   .stats { grid-template-columns: 1fr; }
