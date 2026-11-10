@@ -49,11 +49,12 @@ def featured_cards(root):
     out = []
     for i, p in enumerate([p for p in projects if p.get("featured")], 1):
         tags = "".join(f"<li>{esc(t)}</li>" for t in p["tags"])
+        year_html = f'<span class="pcard__year">{p["year"]}</span>' if p.get("year") else ""
         out.append(
             f'''<article class="pcard" style="--accent:{p["accent"]}">
   <div class="pcard__inner">
     <div class="pcard__info">
-      <div class="pcard__top"><span class="pcard__num">{i:02d}</span><span class="badge">{esc(p["kindLabel"])}</span><span class="pcard__year">{p["year"]}</span></div>
+      <div class="pcard__top"><span class="pcard__num">{i:02d}</span><span class="badge">{esc(p["kindLabel"])}</span>{year_html}</div>
       <h3 class="pcard__title">{esc(p["title"])}</h3>
       <p class="pcard__desc">{esc(p["desc"])}</p>
       <ul class="tags">{tags}</ul>
