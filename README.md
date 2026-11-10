@@ -15,7 +15,7 @@ Una tarjeta 3D con el retrato recorre toda la página (se mueve, gira y se "guar
 6. **Sobre mí** · la tarjeta vuelve y se voltea (cara B); las *skills* son un arco de logos (uno por herramienta, en `assets/img/skills/`) que recorren el arco de un lado a otro y se difuminan en los extremos, con tu marca al centro; y contadores.
 7. **Contacto** · la tarjeta vuelve a la derecha, CTA magnético y marquee gigante.
 
-Página interna: **/proyectos/** con los 17 proyectos, filtros animados (Figma / Sitios web / E-commerce) y tilt en cada tarjeta.
+Página interna: **/proyectos/** con los 18 proyectos, filtros animados (Figma / Sitios web / E-commerce) y tilt en cada tarjeta.
 
 ## Tecnología
 
@@ -30,7 +30,7 @@ Página interna: **/proyectos/** con los 17 proyectos, filtros animados (Figma /
 build.py                 genera index.html, proyectos/index.html, sitemap.xml y robots.txt
 src/pages/               plantillas (home.html, proyectos.html)
 src/partials/            head, header (píldora + menú) y footer
-src/data/projects.json   los 17 proyectos (título, categoría, año, URL, imagen)
+src/data/projects.json   los 18 proyectos (título, categoría, año, URL, imagen)
 assets/css/style.css     estilos
 assets/js/main.js        animaciones (loader, tarjeta 3D, proceso, filtros…)
 assets/img/              retratos, logo, og-diego-torres.jpg (imagen al compartir) y miniaturas WebP de proyectos
