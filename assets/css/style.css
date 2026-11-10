@@ -244,7 +244,7 @@ html.js.is-loading .loader { display: grid; }
 .work__head { margin-bottom: clamp(40px, 6vw, 90px); }
 .work__stack { padding-bottom: 2vh; }
 .pcard { position: sticky; top: calc(11vh + var(--i, 0) * 14px); margin-bottom: clamp(60px, 14vh, 150px); perspective: 1400px; }
-.pcard:nth-child(1) { --i: 0; } .pcard:nth-child(2) { --i: 1; } .pcard:nth-child(3) { --i: 2; } .pcard:nth-child(4) { --i: 3; }
+.pcard:nth-child(1) { --i: 0; } .pcard:nth-child(2) { --i: 1; } .pcard:nth-child(3) { --i: 2; } .pcard:nth-child(4) { --i: 3; } .pcard:nth-child(5) { --i: 4; }
 .pcard:last-child { margin-bottom: 0; }
 .pcard__inner { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); gap: clamp(20px, 3vw, 48px); align-items: center; background: var(--ink-2); border: 1px solid var(--line); border-radius: calc(var(--r) + 6px); padding: clamp(18px, 2.4vw, 34px); min-height: min(74vh, 640px); transform-origin: 50% 0; will-change: transform, filter; box-shadow: 0 -20px 60px -30px rgba(0, 0, 0, 0.8); }
 .pcard__info { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(14px, 1.6vw, 22px); padding: clamp(6px, 1.4vw, 24px); }
