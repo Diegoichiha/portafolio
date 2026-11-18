@@ -223,7 +223,7 @@ html.js.is-loading .loader { display: grid; }
 .manifesto__lead > * { max-width: min(760px, 54%); }
 .manifesto__lead .h2 { font-size: clamp(34px, 4.8vw, 80px); margin-bottom: clamp(24px, 3vw, 44px); max-width: min(900px, 58%); }
 .manifesto__text { font-size: clamp(20px, 2vw, 30px); line-height: 1.32; font-weight: 600; }
-.principles-sec { position: relative; z-index: 2; margin-top: calc(clamp(28px, 3.6vw, 60px) * -1); border-radius: clamp(28px, 3.6vw, 60px) clamp(28px, 3.6vw, 60px) 0 0; box-shadow: 0 -34px 90px -26px rgba(30, 90, 220, 0.4), 0 -1px 0 rgba(255, 255, 255, 0.9); padding-bottom: clamp(80px, 11vw, 160px); }
+.principles-sec { position: relative; z-index: 2; margin-top: calc(clamp(28px, 3.6vw, 60px) * -1); border-radius: clamp(28px, 3.6vw, 60px) clamp(28px, 3.6vw, 60px) 0 0; box-shadow: 0 -34px 90px -26px rgba(30, 90, 220, 0.4), 0 -1px 0 rgba(255, 255, 255, 0.9); padding-bottom: clamp(80px, 11vw, 160px); min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
 .principles { padding-top: clamp(70px, 10vw, 150px); }
 /* Escritorio: el manifiesto queda fijo y la sección siguiente sube y lo tapa (la clase la pone main.js) */
 .manifesto-pinned .manifesto { min-height: 100vh; min-height: 100svh; padding: clamp(100px, 11vw, 150px) 0 clamp(60px, 7vw, 100px); display: flex; align-items: center; }
