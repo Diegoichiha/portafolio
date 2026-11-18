@@ -141,12 +141,27 @@
       [...node.childNodes].forEach((n) => {
         if (n.nodeType === 3) {
           const frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach((part) => {
+          const parts = n.textContent.split(/(\s+)/);
+          // Tipografía: una palabra corta ("El", "mi", "por"…) que va justo después de una coma o un punto no se queda sola
+          // al final de la línea: se agrupa con la siguiente en un contenedor sin salto de línea (.nw).
+          let wrap = null;
+          parts.forEach((part, i) => {
             if (!part) return;
-            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const host = wrap || frag;
+            if (/^\s+$/.test(part)) { host.appendChild(document.createTextNode(' ')); return; }
             const w = document.createElement('span');
             w.className = 'sw'; w.setAttribute('aria-hidden', 'true'); w.textContent = part;
-            frag.appendChild(w); out.push(w);
+            const shortAfterPunct = /^\p{L}{1,3}$/u.test(part) && /[.,;:!?…]$/.test(parts[i - 2] || '') && !!parts[i + 2];
+            if (!wrap && shortAfterPunct) {
+              wrap = document.createElement('span');
+              wrap.className = 'nw';
+              frag.appendChild(wrap);
+              wrap.appendChild(w);
+            } else {
+              host.appendChild(w);
+              wrap = null;
+            }
+            out.push(w);
           });
           n.replaceWith(frag);
         } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
