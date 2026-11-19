@@ -93,6 +93,14 @@ def jsonld(obj):
     return '<script type="application/ld+json">\n' + json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n</script>"
 
 
+SERVICES = [
+    "Diseño UX/UI",
+    "Diseño web",
+    "Identidad de marca",
+    "Diseño gráfico",
+    "Marketing estratégico",
+    "Publicidad digital en Google y Meta",
+]
 PERSON = {
     "@type": "Person",
     "@id": SITE + "#diego",
@@ -100,8 +108,17 @@ PERSON = {
     "url": SITE,
     "image": OG_IMAGE,
     "jobTitle": ROLE,
+    "description": "Diseñador UX/UI y especialista en marketing digital en Colombia. Diseño sitios web, tiendas online e identidades de marca que convierten visitantes en clientes.",
+    "address": {"@type": "PostalAddress", "addressCountry": "CO"},
+    "hasOccupation": [
+        {"@type": "Occupation", "name": "Diseñador UX/UI"},
+        {"@type": "Occupation", "name": "Especialista en marketing digital"},
+    ],
     "sameAs": [LINKEDIN],
-    "knowsAbout": ["UI/UX", "Diseño web", "Branding", "Marketing digital", "Google Ads", "Meta Ads", "WordPress", "Shopify"],
+    "knowsAbout": [
+        "UI/UX", "Experiencia de usuario", "Diseño de interfaces", "Diseño web", "Diseño gráfico", "Branding",
+        "Marketing digital", "Estrategia digital", "Publicidad digital", "Google Ads", "Meta Ads", "Figma", "WordPress", "Shopify",
+    ],
 }
 WEBSITE = {
     "@type": "WebSite",
@@ -121,8 +138,34 @@ SERVICE = {
     "founder": {"@id": SITE + "#diego"},
     "areaServed": "CO",
     "sameAs": [LINKEDIN],
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Diego Torres",
+        "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": n}} for n in SERVICES],
+    },
 }
-JSONLD = jsonld({"@context": "https://schema.org", "@graph": [WEBSITE, PERSON, SERVICE]})
+# lista de proyectos (los mismos que muestra /proyectos/), enlazada a la persona como autor
+PROJECT_LIST = {
+    "@type": "ItemList",
+    "@id": SITE + "proyectos/#lista",
+    "name": "Proyectos de diseño web y UX/UI de Diego Torres",
+    "numberOfItems": len(projects),
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": i,
+            "item": {
+                "@type": "CreativeWork",
+                "name": p["title"],
+                "url": p["url"],
+                "image": SITE + "assets/img/projects/" + p["slug"] + ".webp",
+                "creator": {"@id": SITE + "#diego"},
+            },
+        }
+        for i, p in enumerate(projects, 1)
+    ],
+}
+JSONLD = jsonld({"@context": "https://schema.org", "@graph": [WEBSITE, PERSON, SERVICE, PROJECT_LIST]})
 JSONLD_PROJECTS = jsonld({
     "@context": "https://schema.org",
     "@graph": [
@@ -134,7 +177,9 @@ JSONLD_PROJECTS = jsonld({
             "inLanguage": "es-CO",
             "isPartOf": {"@id": SITE + "#website"},
             "about": {"@id": SITE + "#diego"},
+            "mainEntity": {"@id": SITE + "proyectos/#lista"},
         },
+        PROJECT_LIST,
         {
             "@type": "BreadcrumbList",
             "itemListElement": [

@@ -63,6 +63,7 @@ h1, h2, h3, h4, h5, p { margin: 0; }
 .cm { display: inline-block; vertical-align: top; }
 .ci { display: inline-block; will-change: transform; }
 .sw { display: inline-block; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 .nw { white-space: nowrap; }
 
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); }
